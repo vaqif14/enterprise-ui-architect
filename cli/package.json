@@ -1,0 +1,36 @@
+{
+  "name": "enterprise-ui-architect-cli",
+  "version": "1.0.0",
+  "description": "CLI for installing Enterprise UI Architect skill into AI coding assistants",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "enterprise-ui": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "assets"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "enterprise-ui",
+    "ant-design",
+    "admin-dashboard",
+    "cursor",
+    "claude",
+    "ai-skill"
+  ],
+  "author": "NextLevelBuilder",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

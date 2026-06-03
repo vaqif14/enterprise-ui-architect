@@ -1,0 +1,19 @@
+{
+  "platform": "claude",
+  "outputPath": ".claude/skills/enterprise-ui-architect/SKILL.md",
+  "format": "claude-skill",
+  "description": "Claude Code skill file for Enterprise UI Architect",
+  "contentSource": "SKILL.md",
+  "dataPaths": {
+    "page-patterns": "data/page-patterns.csv",
+    "component-standards": "data/component-standards.csv",
+    "review-rubric": "data/review-rubric.csv",
+    "anti-patterns": "data/anti-patterns.csv",
+    "tokens": "data/tokens.csv",
+    "accessibility": "data/accessibility-checks.csv"
+  },
+  "scripts": {
+    "search": "scripts/search.py"
+  },
+  "quickReference": "templates/base/quick-reference.md"
+}

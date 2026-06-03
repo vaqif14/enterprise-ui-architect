@@ -1,0 +1,31 @@
+id,area,check,why_it_matters,fix
+1,Forms,Every input has an associated label,Screen readers announce purpose cognitive accessibility,Use MUI FormControlLabel or TextField label prop with htmlFor
+2,Forms,Error messages are linked to inputs via aria-describedby,Screen readers announce errors when focusing input,Use TextField helperText prop which binds via aria-describedby automatically
+3,Forms,Required fields are indicated visually and via aria-required,Users know what must be filled before submission,Use TextField required prop and visual indicator
+4,Focus,Dialog and Drawer trap focus while open,Keyboard users cannot tab behind open overlays,MUI Dialog and Drawer handle this automatically verify custom implementations
+5,Focus,Focus returns to trigger after Dialog Drawer closes,Maintains navigation context for keyboard users,MUI built-in behavior test with keyboard
+6,Color,Status is not communicated by color alone,Colorblind users need icons or text to understand state,Add icon + text in MUI Chip do not use color-only
+7,Tables,Table headers are marked with proper th scope,Screen readers can navigate and announce column relationships,Use native table th elements or MUI TableCell component prop
+8,Tables,Row actions are keyboard accessible and focusable,All users can trigger actions without a mouse,Use MUI Button or IconButton for row actions
+9,Navigation,Breadcrumbs reflect current location and are navigable,Wayfinding for all users screen reader context,Implement with nav aria-label current page marked
+10,Buttons,Buttons have descriptive text or aria-label,Screen reader users understand what action will happen,Avoid icon-only IconButton without aria-label
+11,Loading,Loading states are announced to assistive technology,Users know content is being fetched,Use MUI Skeleton with aria-hidden or aria-live regions for dynamic updates
+12,Headings,Page has exactly one h1 and logical heading hierarchy,Screen reader users navigate by headings efficiently,Use Typography variant h1 for page title h2 for sections
+13,Touch,Interactive elements have minimum 44x44px touch target,Mobile users can tap accurately without mis-taps,Ensure MUI Button and IconButton meet target size
+14,Contrast,Text has minimum 4.5:1 contrast ratio against background,Low-vision users can read content,Verify with theme token values do not use light gray on white
+15,Language,HTML lang attribute matches page language,Screen readers use correct pronunciation,Set lang in app root or layout
+16,Navigation,Skip links bypass blocks,Keyboard users need to skip repetitive nav,Add skip-to-content link as first focusable element
+17,Focus,Focus visible indicators are clearly visible,Keyboard users need to see where focus is,Ensure focus-visible outline is visible never disable globally
+18,Navigation,Document page title updates on route change,SPA route changes must update title,Use Next.js metadata or react-helmet for title updates
+19,Images,Alt text for images icons,Decorative vs informative images must be distinguished,Use img alt or aria-label on informative icons hide decorative ones
+20,Landmarks,Page has proper landmark regions,Screen reader users navigate by landmarks,Use main nav aside search landmarks in PageLayout
+21,Status,Status messages announced via aria-live,Toast snackbar announcements not missed by screen readers,Add role status or alert to MUI Snackbar
+22,Forms,Input autocomplete attributes provided,Users with cognitive disabilities benefit from autocomplete,Use TextField inputProps autoComplete for passwords emails names
+23,Contrast,Non-text contrast UI components focus rings borders 3:1,Low-vision users need to see UI boundaries,Ensure focus rings toggle borders slider thumbs meet 3:1 contrast
+24,Responsive,Text reflows at 400 percent zoom,Users who zoom need content to reflow not scroll horizontally,Test at 320px viewport ensure no horizontal scroll except tables
+25,Hover,Content on hover focus is dismissible,Tooltips dropdowns must be dismissible via Escape,Ensure MUI Tooltip Popover dismissible via Escape
+26,Forms,Error prevention for destructive actions,Users need confirmation before irreversible actions,Add Dialog confirmation for delete bulk actions
+27,Navigation,Consistent identification labels across pages,Link purpose and accessible name must match visible label,Ensure Link component text matches aria-label
+28,Language,Language of parts for mixed-language content,Mixed-language content needs correct pronunciation,Use lang attribute on foreign text elements
+29,Motion,Respect prefers-reduced-motion,Animations can cause vestibular issues for some users,Wrap transitions in prefers-reduced-motion media query
+30,Input,Pointer gesture alternatives,Drag-to-reorder swipeable drawers need keyboard alternatives,Provide keyboard alternatives for drag gestures

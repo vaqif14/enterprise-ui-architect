@@ -1,0 +1,19 @@
+{
+  "platform": "codex",
+  "outputPath": ".codex/skills/enterprise-ui-architect/SKILL.md",
+  "format": "codex-skill",
+  "description": "OpenAI Codex skill file for Enterprise UI Architect",
+  "contentSource": "SKILL.md",
+  "quickReference": "templates/base/quick-reference.md",
+  "rules": [
+    "Premium enterprise admin panels define visual feel; Ant Design principles guide architecture.",
+    "Reuse existing PageLayout, Card, Table, Form abstractions.",
+    "Dialog = confirmations; Drawer = quick edit/filter; Page = complex forms.",
+    "Never put complex forms in Dialogs.",
+    "Use typed columns; avoid inline column definitions.",
+    "Tokens only; no random hex colors or inline styles.",
+    "Tables need loading/empty/error states.",
+    "Forms need dirty guard, validation, submit loading.",
+    "StatusChip = color + icon + text."
+  ]
+}

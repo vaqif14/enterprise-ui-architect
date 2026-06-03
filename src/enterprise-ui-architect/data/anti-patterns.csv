@@ -1,0 +1,55 @@
+id,area,bad_pattern,why_bad,fix
+1,Layout,Using raw MUI Box Container without project-specific PageLayout wrapper,Leads to inconsistent padding max-width background across pages every page reinvents the container,Create PageLayout with slots for header content sidebar footer consume theme tokens for spacing background
+2,Form,Putting a complex multi-section form inside a MUI Dialog,Dialogs have limited width and height creates scrollable cramped experience poor mobile UX breaks focus management,Use Drawer for quick create edit use full page for complex forms keep Dialogs for confirmations
+3,Table,Defining TanStack table columns inline inside page component,Not reusable no types hard to test hard to keep consistent leads to drift,Extract typed column configs to shared files or hooks use ColumnType generics
+4,Styling,Using inline sx props or random hex colors in components,Breaks theme switching impossible to maintain inconsistent look overrides do not work,Use MUI theme tokens via theme.palette theme.spacing theme.shape map semantic colors success error warning to palette
+5,State,Storing server filter sort page state only in local useState,Breaks browser back button not shareable via URL resets on refresh,Sync filter sort page with URL query params use controlled TanStack Table with external state
+6,Component,Creating a separate component for every tiny variation of a MUI Button,Component explosion hard to discover inconsistent prop surfaces,Use variant size color props on a single Button wrapper keep abstractions at medium granularity
+7,Drawer,Opening a MUI Drawer without clearing its internal form state on close,Previous data leaks into next open stale validation errors confusing UX,Reset form via react-hook-form reset in onClose or conditionally unmount open && <DrawerContent />
+8,Dialog,Using MUI Dialog without focus management or return focus,Keyboard users lose context focus lands at body violates accessibility,Use MUI Dialog which handles focus verify focus returns to trigger after close
+9,Table,Rendering raw IDs or unformatted dates in table cells,Hard to read looks unprofessional inconsistent with rest of app,Use formatters date-fns for dates number formatters status chips for states
+10,Form,Submitting forms without visual loading state on the submit button,Users click multiple times race conditions unclear if action was triggered,Set submitting state from RHF disable submit button or show CircularProgress during async submit
+11,Navigation,Hardcoding breadcrumb items per page,Drifts from actual routes duplicate data hard to maintain,Derive breadcrumbs from route config use route metadata for titles
+12,Card,Mixing business logic inside MUI Card presentation components,Breaks reusability couples UI to data fetching harder to test,Keep cards presentational fetch data in page container pass data via props
+13,Responsive,Hiding critical table columns on mobile without an alternative detail view,Users lose access to data on mobile poor UX,Use expandable rows or drawer for mobile detail or horizontal scroll with sticky first column
+14,Accessibility,Using color alone to indicate status via MUI Chip,Colorblind users cannot distinguish states fails WCAG,Add icons or text labels alongside color in StatusChip component
+15,Typography,Using arbitrary font sizes across pages instead of theme typography,Breaks visual rhythm inconsistent hierarchy harder to maintain,Use typography scale from MUI theme typography h1 h2 h3 body1 body2 caption
+16,MUI,Using MUI TablePagination for pagination logic instead of TanStack state,MUI TablePagination has rigid API does not match enterprise rounded tonal pagination style breaks visual consistency,Build custom Pagination wrapper around MUI Pagination with shape rounded variant tonal connected to TanStack table state
+17,MUI,Using MUI native Table without TanStack react-table,No typed columns no sorting no filtering no row selection no faceted filters hard to maintain at scale,Always use TanStack react-table for data logic render with native table or MUI Table components
+18,MUI,Using floating label TextField without shrink true,Label overlaps input value breaks enterprise label-above-input pattern looks unprofessional,Use slotProps inputLabel shrink true transform none on MUI TextField or use CustomTextField wrapper
+19,MUI,Missing CardHeader CardContent CardActions structure on cards,Card content looks unstructured missing visual hierarchy inconsistent padding,Always use CardHeader for title actions CardContent for body CardActions for buttons with Divider separators
+20,MUI,Using sx prop for business-specific colors instead of theme palette,Sx prop overrides are hard to grep and maintain break theme switching,Map business colors to theme palette customColors or use CSS variables from theme
+21,MUI,Using item prop on Grid in MUI v7,Item prop was removed in the v7 Grid formerly Grid2. It throws TypeScript errors.,Remove item prop. In MUI v7 all Grid children are items by default.
+22,MUI,Forgetting declare module for variant tonal,TypeScript will reject variant tonal on Button Chip Pagination without augmentation.,Add module augmentation for each component that supports custom variants.
+23,Next.js,Using MUI v7 without AppRouterCacheProvider,Causes CSS injection-order bugs and hydration mismatches in Next.js App Router.,Wrap app in AppRouterCacheProvider from @mui/material-nextjs/v14-appRouter.
+24,Form,Using rules required true alongside a schema resolver,Redundant and can cause conflicting error messages. RHF resolver already handles required checks.,Remove inline rules when using resolver. Trust the schema.
+25,Theme,Hardcoding palette colors instead of using colorSchemes,Breaks dark mode and CSS variable switching.,Define palettes inside theme.colorSchemes.light and theme.colorSchemes.dark.
+26,Theme,Forgetting CssBaseline in provider tree,Missing baseline resets and CSS variable support.,Render CssBaseline as child of ThemeProvider.
+27,Dialog,Forgetting closeAfterTransition false on confirmation dialogs,Focus-trap timing bugs especially with stacked sequential dialogs.,Set closeAfterTransition false on Dialog for confirmation dialogs.
+28,Form,Missing dirty-form confirmation on route leave,Users lose work accidentally when navigating away from unsaved forms.,Implement beforeunload event + router guard for dirty forms.
+29,Production,No React Error Boundaries at page or layout level,One crash whitescreens entire app.,Wrap routes in ErrorBoundary with fallback UI retry button error ID.
+30,Production,Using CircularProgress spinners instead of Skeleton for content loading,Layout shift CLS poor perceived performance.,Use MUI Skeleton for known-shape content like cards table rows stat values.
+31,Production,Missing request cancellation on unmount,Race conditions setState after unmount.,Use AbortController or TanStack Query cancellation.
+32,Production,No optimistic updates for mutations,UI feels sluggish users re-submit.,Use TanStack Query optimisticUpdate pattern with rollback on error.
+33,Production,Icon-only buttons without aria-label,Screen readers announce button with no context.,Enforce aria-label or visually hidden text on icon-only buttons.
+34,Production,Disabling focus outlines globally,Violates WCAG 2.4.7 keyboard users lose position.,Use focus-visible with 2px offset ring never outline none globally.
+35,Production,Missing aria-live on dynamic stat updates,Dashboard numbers change silently screen readers miss them.,Wrap StatCard in aria-live polite region.
+36,Production,Using div with onClick as button,Not keyboard-focusable or activatable.,Use MUI ButtonBase or IconButton.
+37,Production,Missing aria-expanded on custom collapsible panels,Screen readers do not know state of expandable content.,Add aria-expanded to Accordion ExpandableRow wrappers.
+38,Production,Toast notification stacks without role status,Screen readers miss async feedback.,Add role status or alert to Snackbar.
+39,Production,Missing key stability in mapped lists,Re-mounts destroy focus and state.,Use stable IDs never array index as key.
+40,Production,Client-side state mirroring server state,Stale data sync bugs.,Use server-state library TanStack Query instead of useState.
+41,Data,Hardcoding mock data inside chart or table components,Breaks when backend is ready impossible to swap to real API creates technical debt,Always use MSW json-server or API layer mock data never inline in components
+42,Data,Using useEffect fetch without caching or error handling,Causes excessive re-renders no loading states no retry poor UX,Use TanStack Query or SWR for all data fetching
+43,Data,No loading states for API-driven charts or tables,Users see blank or broken UI while data loads perceived as bug,Use Skeleton for charts spinners for buttons TanStack Query isLoading
+44,Data,Missing error handling for backend API failures,Users see crashes or infinite loaders with no recovery path,Implement error boundaries retry buttons fallback UI cached data display
+45,Data,Using setTimeout fake delays instead of MSW or real API,Unrealistic performance profile no contract validation no shared spec,Use MSW with realistic network delays or connect to real API
+46,Data,Keeping json-server or localStorage as production database,Data loss no multi-user support no security no scalability,Always plan migration path to real backend json-server is dev-only
+47,Data,No refetch strategy for real-time dashboard data,Shows stale data users miss critical updates dashboards feel dead,Use TanStack Query refetchInterval WebSocket SSE or polling
+48,Data,Exposing third-party API keys in frontend code,Security vulnerability keys can be stolen abuse rate limits,Proxy third-party APIs through backend never expose keys in frontend
+49,Data,No circuit breaker for unstable backend APIs,One failing API cascades to entire UI white screen of death,Implement fallback UI cached data graceful degradation retry with backoff
+50,Data,Mixing Zustand and TanStack Query without clear separation,Confusing data flow duplicate state sync bugs hard to debug,Use TanStack Query for server state Zustand for client state only
+51,Charts,Binding chart directly to raw API response without adapter,Tight coupling breaks when API changes chart logic mixed with data fetching,Create chart adapter function map API response to chart data shape
+52,Charts,No empty state for charts with zero data points,Empty chart looks broken or crashes chart library,Show empty state illustration or zero baseline when no data
+53,Charts,Using real-time updates without transition animations,Jarring jumps in chart data poor perceived performance,Use Recharts animation or smooth transitions for live data updates
+54,Charts,Fetching all chart data on every small filter change,Excessive API calls slow performance backend overload,Debounce filter changes use TanStack Query staleTime cache filter state in URL

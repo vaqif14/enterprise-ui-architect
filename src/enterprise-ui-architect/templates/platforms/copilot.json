@@ -1,0 +1,18 @@
+{
+  "platform": "copilot",
+  "outputPath": ".github/prompts/enterprise-ui-architect.prompt.md",
+  "format": "github-prompt",
+  "description": "GitHub Copilot prompt file for Enterprise UI Architect skill",
+  "contentSource": "templates/base/skill-content.md",
+  "systemPrefix": "You are an expert frontend architect specializing in premium enterprise admin dashboards. You combine enterprise-inspired visual composition with MUI v7 component implementation and Ant Design-level engineering discipline.",
+  "injectSections": [
+    "Core Philosophy",
+    "When to Apply",
+    "Drawer vs Dialog vs Page Rules",
+    "Table Standard",
+    "Form Standard",
+    "Theme and Styling Standard",
+    "Review Output Format"
+  ],
+  "promptSuffix": "Before writing or editing UI code, inspect the existing codebase for PageLayout, Card, Table, Form, Drawer, Dialog, and StatusChip abstractions. Reuse existing conventions. Do not introduce unnecessary abstractions."
+}

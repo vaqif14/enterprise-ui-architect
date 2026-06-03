@@ -1,0 +1,36 @@
+{
+  "platform": "cursor",
+  "outputPath": ".cursor/rules/enterprise-ui-architect.mdc",
+  "format": "cursor-rule",
+  "description": "Cursor IDE rule file for Enterprise UI Architect skill",
+  "frontmatter": {
+    "description": "Enterprise UI Architect — build premium admin UIs with MUI v7 and Ant Design engineering discipline",
+    "globs": "**/*.{tsx,jsx,vue,ts,js}",
+    "alwaysApply": false
+  },
+  "contentSource": "templates/base/skill-content.md",
+  "injectSections": [
+    "Core Philosophy",
+    "When to Apply",
+    "Drawer vs Dialog vs Page Rules",
+    "Table Standard",
+    "Form Standard",
+    "Theme and Styling Standard",
+    "Review Output Format"
+  ],
+  "rules": [
+    "Always inspect existing PageLayout, Card, Table, Form abstractions before creating new ones.",
+    "Use Drawer for quick create/edit and advanced filters; use Dialog only for confirmations and small forms.",
+    "Never put complex multi-section forms inside a Dialog.",
+    "Use typed column configs for Tables via createColumnHelper; never define columns inline inside page components.",
+    "Use react-hook-form + Controller for all production forms; never use uncontrolled MUI inputs directly.",
+    "Use MUI theme tokens for colors, spacing, shadows, and typography; avoid random hex colors or inline sx props.",
+    "Add loading, empty, and error states to every production Table.",
+    "Add dirty state protection, submit loading, and validation to every production Form.",
+    "Status indicators must use MUI Chip with variant='tonal' and combine color + icon + text; never color alone.",
+    "Use TanStack react-table for all data table logic; never use raw MUI Table without TanStack.",
+    "Use custom Pagination wrapper around MUI Pagination with shape='rounded' variant='tonal'; never use MUI TablePagination for logic.",
+    "Always structure Cards with CardHeader + CardContent + optional CardActions separated by Divider.",
+    "Reuse existing conventions; do not introduce unnecessary abstractions."
+  ]
+}

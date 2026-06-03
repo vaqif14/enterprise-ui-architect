@@ -1,0 +1,26 @@
+id,chart_type,library,use_case,admin_context,best_for_data,avoid_when
+1,Line Chart,Recharts / ApexCharts,Trend over time,Revenue users traffic growth over months,Time-series data continuous trends,Comparing discrete categories
+2,Area Chart,Recharts / ApexCharts,Volume under trend,Stacked revenue multiple metrics cumulative growth,Showing magnitude + trend together,When exact values matter more than shape
+3,Bar Chart,Recharts / MUI X-Charts,Comparing categories,Top products sales by region team performance,Discrete category comparison,Time-series with many points
+4,Horizontal Bar,Recharts / ApexCharts,Long category labels,Employee names product names country names,Category labels too long for vertical,Simple few categories
+5,Stacked Bar,Recharts / ApexCharts,Part-to-whole comparison,Revenue breakdown by product line team composition,Showing composition across categories,More than 5 segments
+6,Grouped Bar,Recharts / ApexCharts,Side-by-side comparison,This month vs last month actual vs target,Comparing multiple series per category,Too many groups
+7,Pie Chart,Recharts / MUI X-Charts,Simple proportion,Market share budget allocation status distribution,Simple 2-5 category proportions,More than 5 categories precision needed
+8,Donut Chart,Recharts / ApexCharts,Proportion with center metric,Utilization rate completion rate overall score,Showing proportion + center KPI,More than 5 categories
+9,Radar Chart,Recharts / ApexCharts,Multi-dimensional profile,Employee skills assessment system health score,5-8 dimensions profile comparison,More than 8 dimensions
+10,Heatmap,ApexCharts / MUI X-Charts,Density matrix,User activity by hour/day correlation matrix,Finding patterns in dense data,Simple sparse data
+11,Scatter Plot,Recharts / ApexCharts,Correlation analysis,Price vs sales customer age vs spend,Finding relationships clusters outliers,Single variable data
+12,Bubble Chart,Recharts / ApexCharts,3-variable correlation,Deal size vs probability vs revenue impact,Adding size dimension to scatter,Too many bubbles overlap
+13,Candlestick,ApexCharts / MUI X-Charts,Financial OHLC,Stock price crypto forex trading data,Open high low close financial data,Non-financial contexts
+14,Sparkline,Recharts / ApexCharts,Mini trend inline,Table row mini chart card header trend,Quick trend in small space,Detailed analysis needed
+15,Gauge Chart,ApexCharts / MUI X-Charts,Single KPI progress,CPU usage disk space quota utilization,0-100% progress toward goal,Multiple metrics
+16,Funnel Chart,Recharts / ApexCharts,Conversion stages,Sales pipeline recruitment funnel drop-off,Sequential stages with drop-off,Non-sequential data
+17,Sankey,Recharts / MUI X-Charts,Flow distribution,Budget flow user journey energy distribution,Showing flows between nodes,Simple linear data
+18,Treemap,Recharts / MUI X-Charts,Hierarchical proportion,Storage usage budget by department file sizes,Hierarchical part-to-whole,Flat non-hierarchical data
+19,Sunburst,Recharts / ApexCharts,Multi-level hierarchy,Org chart budget multi-level category drill-down,Multi-level ring hierarchy,Single level data
+20,Timeline,Gantt / custom,Project scheduling,Project milestones task dependencies roadmap,Time-based events with dependencies,Simple sequential list
+21,Gantt Chart,dhtmlx-gantt / custom,Project management,Resource allocation task scheduling dependencies,Tasks with start end dependencies,Simple task list
+22,Map,Leaflet / Mapbox,Geographic data,Sales by region logistics routes heatmap,Location-based data analysis,Non-geographic data
+23,Choropleth,Leaflet / Mapbox,Regional density,Regional sales population density coverage,Regional value comparison,Individual point data
+24,Table with Inline Bars,custom,Row-level comparison,Progress per row budget per department completion,Quick comparison within table rows,Detailed chart analysis
+25,Metric Cards,custom,KPI at a glance,Revenue users conversion rate active sessions,Single number with context trend,Detailed breakdown needed

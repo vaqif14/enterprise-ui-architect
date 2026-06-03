@@ -1,0 +1,26 @@
+{
+  "platform": "windsurf",
+  "outputPath": ".windsurf/rules/enterprise-ui-architect.md",
+  "format": "windsurf-rule",
+  "description": "Windsurf IDE rule file for Enterprise UI Architect skill",
+  "contentSource": "templates/base/skill-content.md",
+  "injectSections": [
+    "Core Philosophy",
+    "When to Apply",
+    "Drawer vs Dialog vs Page Rules",
+    "Table Standard",
+    "Form Standard",
+    "Theme and Styling Standard",
+    "Review Output Format"
+  ],
+  "rules": [
+    "Inspect existing abstractions before adding new UI primitives.",
+    "Drawer for quick create/edit/filters; Dialog for confirmations only.",
+    "Never place complex forms inside Dialogs.",
+    "Typed table columns in shared files; never inline in pages.",
+    "Tokens for all visual properties; no random hex or inline styles.",
+    "Loading/empty/error states required on Tables.",
+    "Dirty guard + submit loading + validation required on Forms.",
+    "StatusChip uses color + icon + text."
+  ]
+}

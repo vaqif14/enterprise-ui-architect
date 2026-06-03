@@ -1,0 +1,36 @@
+id,page_type,check,severity,why_it_matters
+1,all,All interactive elements have hover states and cursor-pointer,Critical,Users need visual feedback on clickable elements
+2,all,Focus states are visible and consistent across all components,Critical,Keyboard navigation requires clear focus indicators
+3,all,No emojis used as icons — only SVG or icon font icons,Critical,Emojis render inconsistently across OS and look unprofessional
+4,all,Text contrast meets 4.5:1 minimum in light mode,Critical,WCAG AA compliance and readability
+5,all,prefers-reduced-motion is respected for all animations,High,Accessibility for users with vestibular disorders
+6,all,Responsive breakpoints tested: 375px 768px 1024px 1440px,High,Mobile tablet desktop large desktop coverage
+7,all,Loading states present for all async operations,High,Users need feedback during data fetching
+8,all,Empty states designed for every list table grid,High,Empty data should not look broken
+9,all,Error states with helpful messages and recovery actions,High,Users need guidance when things go wrong
+10,all,Browser back button works correctly for filter sort page state,High,Expected browser behavior must be preserved
+11,all,No console errors or warnings in production build,Medium,Clean console indicates code quality
+12,all,All images have alt text or aria-hidden if decorative,Medium,Screen reader compatibility
+13,all,Tab order follows logical reading order,Medium,Keyboard navigation must be intuitive
+14,all,No inline styles on generic UI primitives,Medium,Maintainability and theme consistency
+15,all,Form inputs have associated labels and error links,Medium,Accessibility and validation clarity
+16,crud-list,Table row actions are keyboard accessible,High,All users must access actions without mouse
+17,crud-list,Pagination updates URL query params,Medium,Shareable and bookmarkable page states
+18,crud-list,Search debounce is 300-500ms not instant,Medium,Prevents API flooding and improves UX
+19,crud-list,Bulk actions disabled when no rows selected,Medium,Prevents invalid operations
+20,complex-form,Dirty form confirmation before route leave,High,Prevents accidental data loss
+21,complex-form,Submit button disabled while invalid,High,Prevents invalid submissions
+22,complex-form,Form sections collapse gracefully on mobile,Medium,Mobile form UX must be usable
+23,dashboard,Skeleton screens used instead of spinners for initial load,High,Reduces layout shift improves perceived performance
+24,dashboard,Charts have loading and empty states,High,Data visualization must handle all states
+25,dashboard,Auto-refresh interval is reasonable not excessive,Medium,Prevents server overload
+26,detail,Back navigation returns to correct list state,High,User expects to return to same context
+27,detail,Related data lazy-loaded not blocking initial render,Medium,Improves initial page load speed
+28,settings,Each section saves independently or global save is explicit,High,Prevents accidental partial saves
+29,settings,Toggle switches have immediate feedback with undo capability,Medium,Users need confirmation for state changes
+30,wizard,Step validation prevents forward navigation when invalid,High,Wizard must enforce data quality per step
+31,wizard,Progress indicator shows current step and total steps,High,Users need orientation in multi-step flows
+32,wizard,Summary review step before final submit,High,Prevents accidental submissions
+33,auth,Password visibility toggle present,Medium,Improves UX for password entry
+34,auth,Form focuses first input on load,Low,Small UX improvement for keyboard users
+35,auth,Social login buttons match brand colors,Low,Visual consistency with external services

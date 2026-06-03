@@ -1,0 +1,89 @@
+id,token_type,semantic_name,purpose,example_value,avoid
+1,spacing,space-xs,Tight gaps icon text inline MUI spacing 0.25rem,4px,Random 3px or 5px
+2,spacing,space-sm,Small gaps between related items MUI spacing 0.5rem,8px,Using 10px inconsistently
+3,spacing,space-md,Default component padding and gaps MUI spacing 1rem,16px,Mixing 14px and 18px
+4,spacing,space-lg,Section gaps and card padding MUI spacing 1.5rem,24px,Hardcoding 20px or 30px per page
+5,spacing,space-xl,Page-level spacing between major sections MUI spacing 2rem,32px,Arbitrary 40px without reason
+6,spacing,space-xxl,Hero or dashboard section separation MUI spacing 3rem,48px,Inconsistent large gaps
+7,spacing,space-dense,Dense action bar padding MUI spacing 0.75rem,12px,Hardcoding 10px or 14px in action bars
+8,color,color-primary,Primary actions links buttons MUI palette primary main,#7367F0,Random purple or brand color per component
+9,color,color-secondary,Secondary actions neutral elements MUI palette secondary main,#808390,Hardcoding gray per component
+10,color,color-success,Success states positive feedback MUI palette success main,#28C76F,Green variations per file
+11,color,color-warning,Warning states caution MUI palette warning main,#FF9F43,Orange variations per file
+12,color,color-error,Error states validation failures MUI palette error main,#FF4C51,Red variations per file
+13,color,color-info,Informational neutral highlights MUI palette info main,#00BAD1,Cyan variations per file
+14,color,color-bg-page,Page background color MUI palette background default,#F8F7FA,White on every page or random gray
+15,color,color-bg-card,Card background surface MUI palette background paper,#FFFFFF,Transparent cards with random backgrounds
+16,color,color-text-primary,Primary text headings body MUI palette text primary,rgb(var(--mui-mainColorChannels-light) / 0.9),Pure black #000000
+17,color,color-text-secondary,Secondary text captions meta MUI palette text secondary,rgb(var(--mui-mainColorChannels-light) / 0.7),Hardcoded lighter grays per file
+18,color,color-border,Default borders dividers MUI palette divider,rgb(var(--mui-mainColorChannels-light) / 0.12),Hardcoded #d9d9d9 in some places
+19,opacity,opacity-lighter,Very light tint backgrounds 0.08,0.08,Random opacity values per component
+20,opacity,opacity-light,Light tint backgrounds 0.16,0.16,Inconsistent opacity values
+21,opacity,opacity-main,Medium tint backgrounds 0.3,0.3,Hardcoded opacity strings
+22,opacity,opacity-dark,Dark tint backgrounds 0.5,0.5,Missing opacity scale
+23,opacity,opacity-darker,Darker tint backgrounds 0.7,0.7,Inconsistent darker values
+24,radius,radius-xs,Extra small tags badges MUI shape customBorderRadius xs,2px,0px on small interactive elements
+25,radius,radius-sm,Small tags badges chips MUI shape customBorderRadius sm,4px,0px or 2px randomly
+26,radius,radius-md,Default cards buttons inputs MUI shape customBorderRadius md,6px,Mixing 5px and 8px
+27,radius,radius-lg,Large modals drawers panels MUI shape customBorderRadius lg,8px,Inconsistent large radius
+28,radius,radius-xl,Extra large floating elements MUI shape customBorderRadius xl,10px,Hardcoding 12px+ without token
+29,shadow,shadow-xs,Subtle input focus or hover MUI customShadows xs,0px 1px 6px rgb(var(--mui-mainColorChannels-modeShadow) / 0.1),Hardcoded rgba shadows
+30,shadow,shadow-sm,Subtle card hover or dropdown MUI customShadows sm,0px 2px 8px rgb(var(--mui-mainColorChannels-modeShadow) / 0.12),Hardcoded rgba shadows
+31,shadow,shadow-md,Default card elevation MUI customShadows md,0px 3px 12px rgb(var(--mui-mainColorChannels-modeShadow) / 0.14),Hardcoded rgba shadows
+32,shadow,shadow-lg,Modals drawers floating panels MUI customShadows lg,0px 4px 18px rgb(var(--mui-mainColorChannels-modeShadow) / 0.16),Hardcoded rgba shadows
+33,shadow,shadow-xl,Large floating panels dialogs MUI customShadows xl,0px 5px 20px rgb(var(--mui-mainColorChannels-modeShadow) / 0.18),Hardcoded rgba shadows
+34,shadow,shadow-primary-sm,Primary tinted focus hover MUI customShadows primarySm,0px 2px 6px rgb(var(--mui-palette-primary-mainChannel) / 0.3),Hardcoded purple rgba
+35,shadow,shadow-primary-md,Primary tinted card button elevation MUI customShadows primaryMd,0px 4px 16px rgb(var(--mui-palette-primary-mainChannel) / 0.4),Hardcoded purple rgba
+36,shadow,shadow-success-sm,Success tinted shadow MUI customShadows successSm,0px 2px 6px rgb(var(--mui-palette-success-mainChannel) / 0.3),Missing color-specific shadows
+37,shadow,shadow-error-sm,Error tinted shadow MUI customShadows errorSm,0px 2px 6px rgb(var(--mui-palette-error-mainChannel) / 0.3),Missing color-specific shadows
+38,shadow,shadow-warning-sm,Warning tinted shadow MUI customShadows warningSm,0px 2px 6px rgb(var(--mui-palette-warning-mainChannel) / 0.3),Missing color-specific shadows
+39,typography,font-family,Base font family MUI typography fontFamily,"Public Sans, sans-serif",System-ui or different font per page
+40,typography,font-size-base,Base body font size MUI typography fontSize,13.125px,Random 12px or 14px base
+41,typography,font-page-title,Top-level page headings MUI typography h4,"24px, 600",Arbitrary 22px or 26px
+42,typography,font-section-title,Card and section headings MUI typography h6,"18px, 600",Arbitrary 16px or 20px
+43,typography,font-body,Default body text MUI typography body1,"15px, 400",Mixing 13px and 15px
+44,typography,font-caption,Meta helper small text MUI typography caption,"12px, 400",Hardcoded 11px
+45,typography,font-btn,Button text MUI typography button,"15px, 400, textTransform none",Different button sizes per page
+46,typography,font-overline,Table header label style MUI typography overline,"12px, 500, letterSpacing 0.8px",Normal case or inconsistent weight
+47,typography,font-table-body,Table body text CSS module override,"15px, 400",Inconsistent sizes per table
+48,layout,header-height,Navbar header height CSS variable,54px,Hardcoding 60px or 48px
+49,layout,sidebar-width,Expanded sidebar width CSS variable,260px,Random 240px or 280px
+50,layout,sidebar-collapsed,Collapsed sidebar width CSS variable,71px,Random 64px or 80px
+51,layout,content-padding,Main content padding from themeConfig,24px,Inconsistent 16px or 32px per page
+52,layout,content-max-width,Compact content max-width from themeConfig,1440px,No max-width or arbitrary values
+53,layout,skin,Card and surface skin variant default bordered,default | bordered,Hardcoding shadow or border per component
+54,layout,navbar-type,Navbar behavior type,default | fixed,Inconsistent navbar positioning
+55,layout,navbar-floating,Floating navbar with rounded shadow,true | false,Mixing floating and attached styles
+56,layout,navbar-detached,Detached navbar with rounded bottom,true | false,Mixing detached and attached styles
+57,layout,navbar-blur,Backdrop blur filter on navbar,true | false,Missing blur behavior
+58,layout,content-width,Main content width mode,compact | wide,No content width constraint
+59,layout,footer-detached,Detached footer with rounded top,true | false,Missing footer behavior
+60,layout,semi-dark,Semi-dark sidebar in light mode,true | false,Missing sidebar dark mode
+61,theme,mainColorChannels-light,Light mode RGB channels for opacity,47 43 61,Hardcoded rgb values
+62,theme,mainColorChannels-dark,Dark mode RGB channels for opacity,225 222 245,Hardcoded rgb values
+63,theme,mainColorChannels-lightShadow,Light mode shadow RGB channels,47 43 61,Hardcoded shadow colors
+64,theme,mainColorChannels-darkShadow,Dark mode shadow RGB channels,19 17 32,Hardcoded shadow colors
+65,theme,customColor-bodyBg,Custom body background,#F8F7FA,Hardcoded background colors
+66,theme,customColor-chatBg,Chat background,#F5F5F9,Hardcoded chat backgrounds
+67,theme,customColor-greyLightBg,Light gray background,#FAFAFA,Hardcoded gray backgrounds
+68,theme,customColor-inputBorder,Input border color,rgb(var(--mui-mainColorChannels-light) / 0.22),Hardcoded border colors
+69,theme,customColor-tableHeaderBg,Table header background,transparent,Inconsistent header backgrounds
+70,theme,customColor-tooltipText,Tooltip text color,#FFFFFF,Hardcoded tooltip colors
+71,theme,customColor-trackBg,Track background for sliders switches,#F0F0F0,Hardcoded track colors
+72,breakpoint,bp-sm,Mobile landscape MUI breakpoint sm,600px,Hardcoding 576px
+73,breakpoint,bp-md,Tablet portrait MUI breakpoint md,900px,Hardcoding 768px
+74,breakpoint,bp-lg,Desktop MUI breakpoint lg,1200px,Hardcoding 992px
+75,breakpoint,bp-xl,Large desktop MUI breakpoint xl,1536px,Hardcoding 1280px inconsistently
+76,breakpoint,bp-2xl,Extra large desktop MUI breakpoint 2xl,1920px,Missing extra-large breakpoint
+77,z-index,z-header,Header overlay layer MUI zIndex appBar,1100,Random 1000 or 1200
+78,z-index,z-footer,Footer overlay layer custom,10,Competing with content layers
+79,z-index,z-drawer,Drawer overlays MUI zIndex drawer,1200,Drawers behind dialogs
+80,z-index,z-modal,Modal overlays MUI zIndex modal,1300,Inconsistent modal stacking
+81,z-index,z-tooltip,Tooltips MUI zIndex tooltip,1400,Tooltips buried under other layers
+82,z-index,z-customizer,Theme customizer panel custom,1500,Customizer behind drawers
+83,z-index,z-search,Search overlay layer custom,1500,Missing search z-index
+84,table,table-header-height,Table header row height CSS,56px,Inconsistent header heights
+85,table,table-body-height,Table body row height CSS,50px,Inconsistent row heights
+86,table,table-cell-padding-x-first,First last column horizontal padding CSS,24px,Inconsistent edge padding
+87,table,table-cell-padding-x,Internal column horizontal padding CSS,16px,Inconsistent internal padding
+88,table,table-checkbox-width,Checkbox selection column width,51px,Inconsistent checkbox column width
