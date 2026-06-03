@@ -34,3 +34,6 @@ id,page_type,check,severity,why_it_matters
 33,auth,Password visibility toggle present,Medium,Improves UX for password entry
 34,auth,Form focuses first input on load,Low,Small UX improvement for keyboard users
 35,auth,Social login buttons match brand colors,Low,Visual consistency with external services
+36,dependencies,All new imports resolve to installed packages,High,Missing packages break builds and CI
+37,dependencies,No unused imports or dead dependencies,Medium,Bloats bundle and confuses developers
+38,dependencies,Package manager lockfile is in sync with package.json,High,Prevents inconsistent installs across environments

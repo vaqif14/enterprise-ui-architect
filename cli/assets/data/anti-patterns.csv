@@ -53,3 +53,4 @@ id,area,bad_pattern,why_bad,fix
 52,Charts,No empty state for charts with zero data points,Empty chart looks broken or crashes chart library,Show empty state illustration or zero baseline when no data
 53,Charts,Using real-time updates without transition animations,Jarring jumps in chart data poor perceived performance,Use Recharts animation or smooth transitions for live data updates
 54,Charts,Fetching all chart data on every small filter change,Excessive API calls slow performance backend overload,Debounce filter changes use TanStack Query staleTime cache filter state in URL
+56,Dependencies,Adding new imports without verifying the package is installed,Build fails in CI or for teammates TypeScript errors runtime crashes silent failures,Always check package.json before adding an import If package is missing ask user for confirmation then install with the correct package manager

@@ -512,6 +512,51 @@ Avoid:
 - business-specific styling inside generic UI primitives
 - using `item` prop on MUI v7 `Grid`
 
+## Package Import Discipline
+
+When adding or modifying imports in any module:
+
+### 1. Verify Package Exists
+Before writing a new import statement, check `package.json` (and `package-lock.json` / `yarn.lock` / `pnpm-lock.yaml`) to confirm the package is installed.
+
+```bash
+# Quick check
+grep '"package-name"' package.json
+```
+
+### 2. If Package Is Missing
+**Do NOT install automatically.** Present the user with:
+- The missing package name
+- The import path that triggered the need
+- The recommended install command
+- Ask for explicit confirmation
+
+Example prompt:
+```
+⚠️  Missing package: @mui/x-data-grid
+    Required by: src/features/admin/components/DataTable.tsx
+    Install: npm install @mui/x-data-grid
+    Proceed? (y/n)
+```
+
+### 3. Install Only After Confirmation
+If user confirms, install with the project's package manager:
+- Detect from lockfile: `package-lock.json` → npm, `yarn.lock` → yarn, `pnpm-lock.yaml` → pnpm
+- Respect existing version constraints in `package.json`
+- Update lockfile alongside install
+
+### 4. Post-Install Verification
+After install:
+1. Run TypeScript check: `npx tsc --noEmit`
+2. Verify the import resolves without error
+3. Confirm no unused imports were added (tree-shaking friendly)
+
+### 5. Anti-Pattern
+- Adding imports for packages not in `package.json`
+- Auto-installing without user consent
+- Using different package managers within the same repo
+- Adding unused dependencies "just in case"
+
 ## Keyboard Navigation
 MUI components require specific keyboard patterns:
 
