@@ -557,6 +557,59 @@ After install:
 - Using different package managers within the same repo
 - Adding unused dependencies "just in case"
 
+## Translation Discipline (i18n)
+
+When building multi-language admin dashboards with `next-intl`, `react-i18next`, or similar:
+
+### 1. Always Use `t()` for User-Facing Text
+Every string visible to users must go through the translation function. No hardcoded labels, buttons, placeholders, or error messages.
+
+```tsx
+// ✅ Correct
+<Button>{t("form.save")}</Button>
+<CustomTextField label={t("auth.username")} />
+
+// ❌ Wrong
+<Button>Save</Button>
+<CustomTextField label="Username" />
+```
+
+### 2. Add Keys to All Locale Files
+When you introduce a new `t("key")` call, you **must** add that key to **every** `messages/*.json` file before finishing.
+
+```bash
+# Verify all keys exist in every locale
+enterprise-ui verify-i18n --src ./src
+```
+
+### 3. Namespace Convention
+Use `useTranslations("namespace")` for page-scoped keys. This keeps locale files organized and prevents key collisions.
+
+```tsx
+const t = useTranslations("admin.users");
+// keys become: admin.users.title, admin.users.column.name, etc.
+```
+
+### 4. Dynamic Keys
+Avoid dynamic template literals for translation keys when possible:
+
+```tsx
+// ✅ Prefer explicit mapping
+const statusKey = status === "active" ? "status.active" : "status.inactive";
+<Chip label={t(statusKey)} />
+
+// ❌ Avoid
+<Chip label={t(`status.${status}`)} />
+```
+
+If dynamic keys are unavoidable, ensure all possible values are documented and present in locale files.
+
+### 5. Pre-Delivery Check
+Before marking a feature complete:
+- [ ] All `t()` keys exist in every locale file
+- [ ] No hardcoded user-facing strings remain
+- [ ] `enterprise-ui verify-i18n` passes with zero missing keys
+
 ## Keyboard Navigation
 MUI components require specific keyboard patterns:
 

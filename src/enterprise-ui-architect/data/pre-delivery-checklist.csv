@@ -37,3 +37,6 @@ id,page_type,check,severity,why_it_matters
 36,dependencies,All new imports resolve to installed packages,High,Missing packages break builds and CI
 37,dependencies,No unused imports or dead dependencies,Medium,Bloats bundle and confuses developers
 38,dependencies,Package manager lockfile is in sync with package.json,High,Prevents inconsistent installs across environments
+39,i18n,All translation keys exist in every locale file,High,Missing keys show raw text to users
+40,i18n,No hardcoded user-facing strings outside t() calls,High,Breaks multi-language support
+41,i18n,New translation keys added to all messages files before commit,High,Prevents incomplete translations

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { initCommand } from "./commands/init.js";
 import { verifyImportsCommand } from "./commands/verify-imports.js";
+import { verifyI18nCommand } from "./commands/verify-i18n.js";
 
 function showHelp(): void {
   console.log(`
@@ -9,10 +10,12 @@ Enterprise UI Architect CLI
 Usage:
   enterprise-ui init [options]
   enterprise-ui verify-imports [options]
+  enterprise-ui verify-i18n [options]
 
 Commands:
   init                Install skill into AI coding assistants
   verify-imports      Scan source files and report missing npm packages
+  verify-i18n         Scan source files and report missing translation keys
 
 Options:
   --ai <assistant>    Target AI assistant: cursor, claude, windsurf, copilot, codex, all (default: all)
@@ -26,6 +29,8 @@ Examples:
   enterprise-ui init --ai claude --offline
   enterprise-ui verify-imports
   enterprise-ui verify-imports --src ./src
+  enterprise-ui verify-i18n
+  enterprise-ui verify-i18n --src ./src
 `);
 }
 
@@ -42,7 +47,7 @@ function parseArgs(args: string[]): {
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    if (arg === "init" || arg === "verify-imports") {
+    if (arg === "init" || arg === "verify-imports" || arg === "verify-i18n") {
       command = arg;
     } else if (arg === "--ai" && i + 1 < args.length) {
       result.ai = args[++i];
@@ -65,7 +70,7 @@ function main(): number {
   const parsed = parseArgs(args);
 
   if (parsed.version) {
-    console.log("1.0.0");
+    console.log("1.1.0");
     return 0;
   }
 
@@ -87,6 +92,16 @@ function main(): number {
   if (parsed.command === "verify-imports") {
     try {
       verifyImportsCommand({ srcDir: parsed.srcDir });
+      return 0;
+    } catch (err) {
+      console.error(`Error: ${(err as Error).message}`);
+      return 1;
+    }
+  }
+
+  if (parsed.command === "verify-i18n") {
+    try {
+      verifyI18nCommand({ srcDir: parsed.srcDir });
       return 0;
     } catch (err) {
       console.error(`Error: ${(err as Error).message}`);
