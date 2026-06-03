@@ -2,7 +2,7 @@
   "name": "enterprise-ui-architect",
   "displayName": "Enterprise UI Architect",
   "description": "AI skill for building premium enterprise admin interfaces with MUI v7 component implementation, Ant Design-level architecture discipline, TypeScript-first patterns, token-based styling, accessibility, and production-ready state handling.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "NextLevelBuilder",
   "license": "MIT",
   "repository": {
@@ -13,12 +13,17 @@
   "bugs": {
     "url": "https://github.com/nextlevelbuilder/enterprise-ui-architect-skill/issues"
   },
-  "platforms": ["cursor", "claude", "windsurf", "copilot", "codex"],
+  "platforms": [
+    "cursor",
+    "claude",
+    "windsurf",
+    "copilot",
+    "codex"
+  ],
   "keywords": [
     "enterprise-ui",
     "admin-dashboard",
     "mui-v7",
-    "enterprise-ui",
     "design-system",
     "cursor-ai",
     "frontend-architecture",

@@ -1,5 +1,5 @@
-import { readFileSync, existsSync, readdirSync, statSync } from "fs";
-import { resolve, dirname, join, extname } from "path";
+import { readFileSync, existsSync, readdirSync } from "fs";
+import { resolve, dirname, join, sep, extname } from "path";
 
 interface VerifyOptions {
   srcDir: string;
@@ -11,6 +11,16 @@ interface ImportInfo {
   line: number;
   source: string;
 }
+
+const NODE_BUILTINS = new Set([
+  "assert", "async_hooks", "buffer", "child_process", "cluster", "console",
+  "constants", "crypto", "dgram", "diagnostics_channel", "dns", "domain",
+  "events", "fs", "http", "http2", "https", "inspector", "module", "net",
+  "os", "path", "perf_hooks", "process", "punycode", "querystring", "readline",
+  "repl", "stream", "string_decoder", "sys", "timers", "timers/promises",
+  "tls", "trace_events", "tty", "url", "util", "v8", "vm", "wasi", "worker_threads",
+  "zlib", "node:test",
+]);
 
 function findPackageJson(startDir: string): string | null {
   let dir = resolve(startDir);
@@ -36,22 +46,34 @@ function getInstalledPackages(packageJsonPath: string): Set<string> {
   const pkg = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
   const deps = Object.keys(pkg.dependencies || {});
   const devDeps = Object.keys(pkg.devDependencies || {});
-  return new Set([...deps, ...devDeps]);
+  const peerDeps = Object.keys(pkg.peerDependencies || {});
+  const optionalDeps = Object.keys(pkg.optionalDependencies || {});
+  return new Set([...deps, ...devDeps, ...peerDeps, ...optionalDeps]);
 }
 
 function getPathAliases(tsConfigPath: string): string[] {
   try {
-    const tsconfig = JSON.parse(readFileSync(tsConfigPath, "utf-8"));
-    const paths = tsconfig.compilerOptions?.paths || {};
-    return Object.keys(paths);
+    const raw = readFileSync(tsConfigPath, "utf-8");
+    // Extract path aliases via regex — tolerant to comments and trailing commas
+    const aliases: string[] = [];
+    // Match patterns like "@core/*" or "@/components/*" inside "paths": { ... }
+    const pathsMatch = raw.match(/"paths"\s*:\s*\{([\s\S]*?)\}/);
+    if (pathsMatch) {
+      const pathsBlock = pathsMatch[1];
+      const keyRegex = /"(@[^"]+)"\s*:/g;
+      let m: RegExpExecArray | null;
+      while ((m = keyRegex.exec(pathsBlock)) !== null) {
+        aliases.push(m[1]);
+      }
+    }
+    return aliases.length > 0 ? aliases : ["@/*"];
   } catch {
-    return [];
+    return ["@/*"];
   }
 }
 
 function isPathAlias(source: string, aliases: string[]): boolean {
   for (const alias of aliases) {
-    // Convert tsconfig glob to regex: @core/* → /^@core\//
     const prefix = alias.replace(/\/\*$/, "");
     if (alias.endsWith("/*")) {
       if (source === prefix || source.startsWith(prefix + "/")) {
@@ -72,7 +94,6 @@ function getSourceFiles(dir: string): string[] {
 
   for (const entry of entries) {
     const fullPath = join(dir, entry.name);
-
     if (entry.isDirectory()) {
       if (
         entry.name === "node_modules" ||
@@ -100,13 +121,31 @@ function extractImports(filePath: string): ImportInfo[] {
   const lines = content.split("\n");
   const imports: ImportInfo[] = [];
 
-  const importRegex = /^(?:import\s+.*?from\s+|import\s*\(|require\s*\()["']([^"';]+)["'];?/;
+  // Matches single-line imports: import ... from "..."
+  const singleLineRegex = /^(?:import\s+.*?from\s+|import\s*\(|require\s*\()["']([^"';]+)["'];?/;
+
+  // Matches multi-line import end: from "..."
+  const multiLineEndRegex = /from\s+["']([^"';]+)["'];?/;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
-    const match = importRegex.exec(line);
-    if (match) {
-      imports.push({ path: filePath, line: i + 1, source: match[1] });
+    const singleMatch = singleLineRegex.exec(line);
+    if (singleMatch) {
+      imports.push({ path: filePath, line: i + 1, source: singleMatch[1] });
+      continue;
+    }
+    // Multi-line import: starts with "import" but no "from" on same line
+    if (line.startsWith("import") && !line.includes("from") && !line.includes("(")) {
+      // Look ahead up to 5 lines for "from '...'"
+      for (let j = i + 1; j < Math.min(i + 6, lines.length); j++) {
+        const nextLine = lines[j].trim();
+        const multiMatch = multiLineEndRegex.exec(nextLine);
+        if (multiMatch) {
+          imports.push({ path: filePath, line: j + 1, source: multiMatch[1] });
+          break;
+        }
+        if (nextLine.endsWith(";")) break; // End of import without from
+      }
     }
   }
 
@@ -127,7 +166,12 @@ function resolvePackageName(source: string): string | null {
   return idx > 0 ? source.slice(0, idx) : source;
 }
 
-function detectPackageManager(lockFiles: string[]): "npm" | "yarn" | "pnpm" | "unknown" {
+function isNodeBuiltin(pkg: string): boolean {
+  return NODE_BUILTINS.has(pkg) || NODE_BUILTINS.has(`node:${pkg}`);
+}
+
+function detectPackageManager(lockFiles: string[]): "npm" | "yarn" | "pnpm" | "bun" | "unknown" {
+  if (lockFiles.some((f) => f.endsWith("bun.lockb"))) return "bun";
   if (lockFiles.some((f) => f.endsWith("pnpm-lock.yaml"))) return "pnpm";
   if (lockFiles.some((f) => f.endsWith("yarn.lock"))) return "yarn";
   if (lockFiles.some((f) => f.endsWith("package-lock.json"))) return "npm";
@@ -149,7 +193,7 @@ export function verifyImportsCommand(options: Partial<VerifyOptions> = {}): void
   const tsConfigPath = findTsConfig(srcDir);
   const pathAliases = tsConfigPath ? getPathAliases(tsConfigPath) : [];
 
-  const lockFiles = ["package-lock.json", "yarn.lock", "pnpm-lock.yaml"].map((f) =>
+  const lockFiles = ["package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb"].map((f) =>
     join(projectRoot, f)
   );
   const existingLocks = lockFiles.filter((f) => existsSync(f));
@@ -169,6 +213,7 @@ export function verifyImportsCommand(options: Partial<VerifyOptions> = {}): void
 
     const pkg = resolvePackageName(imp.source);
     if (!pkg) continue;
+    if (isNodeBuiltin(pkg)) continue;
     if (installed.has(pkg)) continue;
 
     const list = missing.get(pkg) || [];
@@ -187,7 +232,7 @@ export function verifyImportsCommand(options: Partial<VerifyOptions> = {}): void
     console.log(`  📦 ${pkg}`);
     console.log(`     Used in:`);
     for (const imp of imports.slice(0, 3)) {
-      const relPath = imp.path.replace(projectRoot + "/", "");
+      const relPath = imp.path.replace(projectRoot + sep, "").replace(/^\//, "");
       console.log(`       - ${relPath}:${imp.line}  →  import from "${imp.source}"`);
     }
     if (imports.length > 3) {
@@ -195,11 +240,13 @@ export function verifyImportsCommand(options: Partial<VerifyOptions> = {}): void
     }
 
     const installCmd =
-      pkgManager === "pnpm"
-        ? `pnpm add ${pkg}`
-        : pkgManager === "yarn"
-          ? `yarn add ${pkg}`
-          : `npm install ${pkg}`;
+      pkgManager === "bun"
+        ? `bun add ${pkg}`
+        : pkgManager === "pnpm"
+          ? `pnpm add ${pkg}`
+          : pkgManager === "yarn"
+            ? `yarn add ${pkg}`
+            : `npm install ${pkg}`;
 
     console.log(`     Install: ${installCmd}\n`);
   }

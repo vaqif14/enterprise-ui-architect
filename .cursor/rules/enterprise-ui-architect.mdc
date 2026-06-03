@@ -1,5 +1,5 @@
 ---
-description: Enterprise UI Architect — build premium admin UIs with MUI v7, Ant Design discipline, design system intelligence, and backend data integration
+description: Enterprise UI Architect — build premium admin UIs with MUI v7, Ant Design discipline, design system intelligence, backend data integration, and i18n/package verification
 globs: "**/*.{tsx,jsx,vue,ts,js}"
 alwaysApply: false
 ---
@@ -7,7 +7,7 @@ alwaysApply: false
 # Enterprise UI Architect
 
 ## What This Skill Does
-Guides AI coding assistants to build premium admin dashboards that use MUI v7 components, follow Ant Design engineering discipline, leverage design system intelligence, and integrate backend data correctly.
+Guides AI coding assistants to build premium admin dashboards with MUI v7 components, Ant Design-level engineering discipline, design system intelligence, backend integration patterns, and translation/package verification.
 
 ## Visual Direction (Enterprise Admin)
 - Card-based layouts with consistent padding and elevation
@@ -44,7 +44,7 @@ Guides AI coding assistants to build premium admin dashboards that use MUI v7 co
 - Icons: Tabler Icons
 - Data Fetching: TanStack Query (preferred) or SWR
 - Real-Time: WebSocket / STOMP / Socket.io / SSE
-- API Mocking: MSW (Mock Service Worker) for development
+- API Mocking: MSW (Mock Service Worker)
 
 ## Design System Generation
 Generate a complete design system for any admin product:
@@ -61,28 +61,15 @@ python scripts/search.py --query "saas" --design-system --persist --product "MyA
 ```
 
 ## Backend Data Detection & Integration
-Before building any chart table or form detect the data source:
+Before building any chart, table, or form, detect the data source:
 
-### Detection Rules
-1. Check for backend presence: `package.json` proxy, `vite.config.ts` proxy, `.env` API URLs, `openapi.yaml`, Swagger docs, Spring Boot repo, NestJS repo, existing API calls.
-2. Check for real-time endpoints: WebSocket, STOMP, Socket.io, SSE, GraphQL subscriptions.
-3. Check for existing API layer: `api/`, `services/`, `hooks/` directories.
-
-### Decision Matrix
-| Scenario | Frontend Approach | Mock Strategy |
+| Scenario | Approach | Mock Strategy |
 |---|---|---|
-| Backend exists + API documented | Connect real API immediately | None — use real data |
-| Backend exists + API not documented | Explore endpoints reverse engineer | MSW with discovered endpoints |
+| Backend exists + API documented | Connect real API immediately | None |
+| Backend exists + API not documented | Explore endpoints, reverse engineer | MSW with discovered endpoints |
 | Backend in development | MSW with agreed contract | MSW browser + server worker |
-| No backend | json-server or localStorage | json-server db.json |
+| No backend | json-server or localStorage | `db.json` |
 | Backend unstable | Retry logic + circuit breaker | MSW fallback mode |
-
-### Chart + Backend Integration
-- Use TanStack Query `useQuery` for chart data
-- Map API response to chart format in adapter function
-- Use `staleTime` and `refetchInterval` for real-time dashboards
-- Show Skeleton (not spinner) while chart data loads
-- Use `placeholderData` to show previous data while refetching
 
 ### Real-Time Patterns
 | Backend | Frontend Pattern |
@@ -92,26 +79,37 @@ Before building any chart table or form detect the data source:
 | Any + SSE | EventSource with reconnect polyfill |
 | Any + polling | TanStack Query `refetchInterval` |
 
+### Chart + API Mapping
+- Use TanStack Query `useQuery` for chart data
+- Map API response → chart format via **adapter function**
+- Use `staleTime` + `refetchInterval` for real-time dashboards
+- Show **Skeleton** (not spinner) while chart data loads
+- Use `placeholderData` to show previous data while refetching
+
+## Translation Discipline (i18n)
+When building multi-language admin dashboards:
+
+1. **Always use `t()` for user-facing text** — No hardcoded labels, buttons, placeholders
+2. **Add keys to all locale files** — When introducing `t("key")`, add to every `messages/*.json`
+3. **Namespace convention** — Use `useTranslations("namespace")` for page-scoped keys
+4. **Dynamic keys** — Avoid template literals; use explicit mapping when possible
+5. **Pre-delivery** — Run `enterprise-ui verify-i18n --src ./src`
+
+## Package Import Discipline
+When adding imports:
+
+1. **Verify package exists** in `package.json` before writing import
+2. **If missing, ask user** — Do NOT auto-install. Present package name, import path, install command
+3. **Install only after confirmation** — Detect package manager from lockfile
+4. **Post-install** — Run `npx tsc --noEmit` to verify
+5. **Check** — `enterprise-ui verify-imports --src ./src`
+
 ## Industry-Specific Reasoning
 15 admin industries with tailored rules:
-- SaaS / B2B Platform
-- Fintech / Banking
-- Healthcare / Medical
-- E-commerce Admin
-- Logistics / Supply Chain
-- HR / People Management
-- CRM / Sales
-- ERP / Manufacturing
-- Education / LMS
-- Government / Public Sector
-- Cybersecurity / SOC
-- Real Estate / Property
-- Energy / Utilities
-- Media / Content Management
-- Nonprofit / NGO
+SaaS, Fintech, Healthcare, E-commerce, Logistics, HR, CRM, ERP, Education, Government, Cybersecurity, Real Estate, Energy, Media, Nonprofit.
 
 ## UI Styles for Admin Dashboards
-15 styles rated for admin suitability:
+10 styles rated for admin suitability:
 - Minimalism & Swiss Style (10/10)
 - Bento Box Grid (10/10)
 - Dark Mode OLED (9/10)
@@ -152,4 +150,6 @@ Before building any chart table or form detect the data source:
 - Use TanStack Query for all server state; never use raw useEffect + fetch without caching.
 - Map API responses to chart format via adapter functions; never bind charts directly to raw API responses.
 - Use MSW for mock data when backend is not ready; never hardcode mock data inside components.
+- Every user-facing string must use `t()`; never hardcode text in multi-language apps.
+- Before adding a new import, check package.json; if package is missing, ask user for confirmation before installing.
 - Reuse existing conventions; do not introduce unnecessary abstractions.

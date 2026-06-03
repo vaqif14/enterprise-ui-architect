@@ -70,7 +70,7 @@ function main(): number {
   const parsed = parseArgs(args);
 
   if (parsed.version) {
-    console.log("1.1.0");
+    console.log("2.0.0");
     return 0;
   }
 

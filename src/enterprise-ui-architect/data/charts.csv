@@ -11,7 +11,7 @@ id,chart_type,library,use_case,admin_context,best_for_data,avoid_when
 10,Heatmap,ApexCharts / MUI X-Charts,Density matrix,User activity by hour/day correlation matrix,Finding patterns in dense data,Simple sparse data
 11,Scatter Plot,Recharts / ApexCharts,Correlation analysis,Price vs sales customer age vs spend,Finding relationships clusters outliers,Single variable data
 12,Bubble Chart,Recharts / ApexCharts,3-variable correlation,Deal size vs probability vs revenue impact,Adding size dimension to scatter,Too many bubbles overlap
-13,Candlestick,ApexCharts / MUI X-Charts,Financial OHLC,Stock price crypto forex trading data,Open high low close financial data,Non-financial contexts
+13,Candlestick,ApexCharts,Financial OHLC,Stock price crypto forex trading data,Open high low close financial data,Non-financial contexts
 14,Sparkline,Recharts / ApexCharts,Mini trend inline,Table row mini chart card header trend,Quick trend in small space,Detailed analysis needed
 15,Gauge Chart,ApexCharts / MUI X-Charts,Single KPI progress,CPU usage disk space quota utilization,0-100% progress toward goal,Multiple metrics
 16,Funnel Chart,Recharts / ApexCharts,Conversion stages,Sales pipeline recruitment funnel drop-off,Sequential stages with drop-off,Non-sequential data

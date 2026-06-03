@@ -196,7 +196,7 @@ enterprise-ui-architect-skill/
 │   ├── src/
 │   │   └── commands/
 │   │       └── init.ts                   # Platform initialization
-│   ├── src/templates/                    # Bundled platform configs
+│   ├── assets/templates/                 # Bundled platform configs
 │   └── package.json
 ├── .cursor/
 │   └── rules/

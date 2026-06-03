@@ -1,25 +1,27 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to the Enterprise UI Architect skill.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [1.0.0] - 2026-06-03
+## 2.0.0 — 2026-06-03
 
 ### Added
-- Initial release of Enterprise UI Architect skill
-- MUI v7 component implementation with Ant Design architecture principles
-- 8 page patterns: CRUD List, Complex Form, Dashboard, Detail, Settings, Wizard, Auth, Blank Layout
-- 16 component standards with MUI v7 API accuracy
-- 88 design tokens mapped to actual enterprise admin patterns
-- 40 anti-patterns with practical fixes
-- 30 accessibility checks aligned with WCAG 2.1 AA
-- 10-category production readiness review rubric
-- Cross-platform CLI supporting Cursor, Claude, Windsurf, Copilot, Codex
-- Zero-dependency Python search utility for CSV data
-- Theme augmentation guidance for custom variants
-- Next.js MUI v7 setup documentation
-- Layout architecture: skin, navbar modes, content width, semi-dark sidebar
-- Keyboard navigation guidance for MUI components
-- Production patterns: Skeleton, ErrorBoundary, optimistic updates
+- **Translation verification**: `enterprise-ui verify-i18n [--src <dir>]` command scans source files for `t()` calls, respects `useTranslations` namespace, and reports missing keys across all locale files
+- **Package import verification**: `enterprise-ui verify-imports [--src <dir>]` command scans imports, detects missing npm packages, auto-detects package manager, respects tsconfig path aliases
+- **Translation Discipline (i18n)** section in SKILL.md — guidelines for `next-intl` / `react-i18next` workflows
+- **Package Import Discipline** section in SKILL.md — verify before import, ask user before install
+- New anti-patterns: #56 (missing packages), #57 (missing translation keys)
+- New pre-delivery checklist items for dependencies and i18n
+
+### Changed
+- Version alignment: all artifacts now report `2.0.0`
+- Claude skill synced with full SKILL.md content (696 lines)
+- Cursor `.mdc` rule regenerated with new discipline sections
+
+## 1.0.0 — 2026-06-03
+
+### Added
+- Initial release with MUI v7 enterprise admin dashboard skill
+- 14 data CSV domains (tokens, components, patterns, anti-patterns, rubric, accessibility, industries, styles, colors, typography, charts, pre-delivery, api-integration, data-strategies)
+- Python search engine with BM25 scoring and design system generation
+- Backend-aware integration patterns (API detection, real-time, chart-to-API mapping)
+- TypeScript CLI with platform initialization for Cursor, Claude, Windsurf, Copilot, Codex

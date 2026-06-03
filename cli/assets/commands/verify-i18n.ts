@@ -1,5 +1,5 @@
 import { readFileSync, existsSync, readdirSync } from "fs";
-import { resolve, dirname, join, extname } from "path";
+import { resolve, dirname, join, sep, extname } from "path";
 
 interface VerifyOptions {
   srcDir: string;
@@ -76,31 +76,59 @@ function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
   return current;
 }
 
-function extractNamespace(filePath: string): string | null {
-  const content = readFileSync(filePath, "utf-8");
+function extractNamespace(content: string): string | null {
   const match = /useTranslations\s*\(\s*["'`]([^"'`]+)["'`]\s*\)/.exec(content);
   return match ? match[1] : null;
 }
 
-function extractTranslationKeys(filePath: string, namespace: string | null): KeyLocation[] {
-  const content = readFileSync(filePath, "utf-8");
+function isInsideStringLiteral(line: string, matchIndex: number): boolean {
+  // Check if the character before t( is inside a string literal
+  const before = line.slice(0, matchIndex);
+  let inSingle = false;
+  let inDouble = false;
+  let escaped = false;
+
+  for (const ch of before) {
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+    if (ch === "\\") {
+      escaped = true;
+      continue;
+    }
+    if (ch === '"' && !inSingle) {
+      inDouble = !inDouble;
+    } else if (ch === "'" && !inDouble) {
+      inSingle = !inSingle;
+    }
+  }
+
+  return inSingle || inDouble;
+}
+
+function extractTranslationKeys(content: string, namespace: string | null): KeyLocation[] {
   const lines = content.split("\n");
   const keys: KeyLocation[] = [];
   const seen = new Set<string>();
 
-  // Matches: t("key.subkey") or t('key.subkey') or t(`key.subkey`)
-  // Uses word boundary to avoid matching emit('click') etc.
   const regex = /\bt\s*\(\s*["'`]([a-zA-Z0-9_.-]+)["'`]/g;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
+    // Skip comment-only lines
+    const codePart = line.split("//")[0];
+    if (!codePart.includes("t(")) continue;
+
     let match: RegExpExecArray | null;
     while ((match = regex.exec(line)) !== null) {
+      if (isInsideStringLiteral(line, match.index)) continue;
+
       const rawKey = match[1];
       const key = namespace ? `${namespace}.${rawKey}` : rawKey;
       if (!seen.has(key)) {
         seen.add(key);
-        keys.push({ key, file: filePath, line: i + 1 });
+        keys.push({ key, file: "", line: i + 1 });
       }
     }
   }
@@ -129,11 +157,12 @@ export function verifyI18nCommand(options: Partial<VerifyOptions> = {}): void {
   const allKeys: Map<string, Array<{ file: string; line: number }>> = new Map();
 
   for (const file of files) {
-    const namespace = extractNamespace(file);
-    const keys = extractTranslationKeys(file, namespace);
-    for (const { key, file: f, line } of keys) {
+    const content = readFileSync(file, "utf-8");
+    const namespace = extractNamespace(content);
+    const keys = extractTranslationKeys(content, namespace);
+    for (const { key, line } of keys) {
       const list = allKeys.get(key) || [];
-      list.push({ file: f, line });
+      list.push({ file, line });
       allKeys.set(key, list);
     }
   }
@@ -169,7 +198,7 @@ export function verifyI18nCommand(options: Partial<VerifyOptions> = {}): void {
     if (missing.length === 0) continue;
     console.log(`  🌐 ${locale}.json (${missing.length} missing):`);
     for (const { key, file, line } of missing.slice(0, 10)) {
-      const relPath = file.replace(srcDir + "/", "").replace(/^\//, "");
+      const relPath = file.replace(srcDir + sep, "").replace(/^\//, "");
       console.log(`     - ${key}`);
       console.log(`       used in: ${relPath}:${line}`);
     }

@@ -93,6 +93,24 @@ python scripts/search.py --query "saas" --design-system --persist --product "MyA
 - [ ] Implement retry + error fallback for unstable APIs
 - [ ] Use refetchInterval or WebSocket for real-time dashboards
 
+## Package Import Verification
+```bash
+enterprise-ui verify-imports --src ./src
+```
+- [ ] All new imports resolve to installed packages
+- [ ] Check package.json before adding imports
+- [ ] Ask user before installing missing packages
+- [ ] Post-install: run `npx tsc --noEmit`
+
+## Translation Verification
+```bash
+enterprise-ui verify-i18n --src ./src
+```
+- [ ] All user-facing strings use `t()` — no hardcoded text
+- [ ] Every `t("key")` exists in all `messages/*.json` files
+- [ ] Use `useTranslations("namespace")` for page-scoped keys
+- [ ] Avoid dynamic template literals for keys
+
 ## Pre-Delivery Checklist
 - [ ] All interactive elements have hover states and cursor-pointer
 - [ ] Focus states are visible and consistent
