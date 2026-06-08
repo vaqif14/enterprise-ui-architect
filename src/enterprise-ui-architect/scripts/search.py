@@ -34,6 +34,7 @@ DOMAINS = {
     "pre-delivery-checklist": "pre-delivery-checklist.csv",
     "api-integration": "api-integration-patterns.csv",
     "data-strategies": "data-source-strategies.csv",
+    "frontend-loop": "frontend-loop.csv",
 }
 
 
@@ -52,8 +53,8 @@ def find_data_dir() -> Path:
     return candidates[0]
 
 
-def bm25_score(row: dict, query_terms: list[str], term_doc_counts: dict[str, int], total_docs: int, avgdl: float, k1: float = 1.5, b: float = 0.75) -> float:
-    """BM25 scoring with proper IDF across all row values."""
+def bm25_score(row: dict, query_terms: list[str], avgdl: float, k1: float = 1.5, b: float = 0.75) -> float:
+    """Simple BM25-inspired scoring across all row values."""
     text = " ".join(str(v).lower() for v in row.values() if v is not None)
     doc_len = len(text.split())
     score = 0.0
@@ -61,9 +62,9 @@ def bm25_score(row: dict, query_terms: list[str], term_doc_counts: dict[str, int
         tf = text.count(term.lower())
         if tf == 0:
             continue
-        n = term_doc_counts.get(term.lower(), 1)
-        idf = max(0.0, (total_docs - n + 0.5) / (n + 0.5))
-        idf = max(0.01, idf)  # Prevent negative IDF
+        # IDF approximation: log(1 + N/n) where N=total docs, n=docs with term
+        # For simplicity, use a fixed reasonable IDF
+        idf = 1.0
         tf_component = (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * (doc_len / max(avgdl, 1))))
         score += idf * tf_component
     return score
@@ -79,11 +80,11 @@ def search_csv(data_dir: Path, domain: str, query: str, max_results: int = 10) -
     if not filepath.exists():
         return f"Error: File not found: {filepath}"
 
-    query_terms = [t.lower() for t in query.split()]
+    query_terms = query.split()
     results = []
     total_docs = 0
 
-    # First pass: count total docs, avgdl, and term document frequencies
+    # First pass: count total docs and average doc length
     with open(filepath, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         docs = list(reader)
@@ -91,18 +92,9 @@ def search_csv(data_dir: Path, domain: str, query: str, max_results: int = 10) -
         total_len = sum(len(" ".join(str(v) for v in r.values() if v is not None).split()) for r in docs)
         avgdl = total_len / max(total_docs, 1)
 
-    term_doc_counts: dict[str, int] = {}
-    for term in query_terms:
-        count = 0
-        for row in docs:
-            text = " ".join(str(v).lower() for v in row.values() if v is not None)
-            if term in text:
-                count += 1
-        term_doc_counts[term] = max(count, 1)
-
     # Second pass: score
     for row in docs:
-        s = bm25_score(row, query_terms, term_doc_counts, total_docs, avgdl)
+        s = bm25_score(row, query_terms, avgdl)
         if s > 0:
             results.append((s, row))
 
@@ -236,13 +228,10 @@ def main():
 
     if args.domain == "all":
         for domain in DOMAINS:
-            result = search_csv(data_dir, domain, args.query, args.n)
-            if "No results" in result:
-                continue
             print(f"\n{'='*60}")
             print(f"Domain: {domain}")
             print(f"{'='*60}")
-            print(result)
+            print(search_csv(data_dir, domain, args.query, args.n))
         return
 
     output = search_csv(data_dir, args.domain, args.query, args.n)

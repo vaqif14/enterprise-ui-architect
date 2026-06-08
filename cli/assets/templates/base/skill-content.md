@@ -3,6 +3,21 @@
 ## What This Skill Does
 Guides AI coding assistants to build premium admin dashboards that use MUI v7 components, follow Ant Design engineering discipline, and leverage design system intelligence for consistent, industry-appropriate UIs.
 
+Includes a **Kombai-inspired Unified Frontend Loop** adapted for Cursor: stack lock → canvas design → Context Graph reuse → plan → code → browser verification → sync back.
+
+## Unified Frontend Loop (Summary)
+| Phase | Kombai concept | Cursor equivalent |
+|---|---|---|
+| 1 | Stack + theme lock | Repo scan + `design-system/MASTER.md` |
+| 2 | Design canvas + variants | Canvas / wireframes; 3 concepts + v2/v3 |
+| 3 | Context Graphs | Component/hook/token inventory before codegen |
+| 4 | Plan mode | Approved plan for complex features |
+| 5 | Code mode | MUI + RHF + TanStack implementation |
+| 6 | Kombai Browser | browser MCP + DOM-targeted fixes |
+| 7 | Sync loop | Code + design-system doc updates |
+
+See `references/unified-frontend-loop.md` for full workflow.
+
 ## Visual Direction (Enterprise Admin)
 - Card-based layouts with consistent padding and elevation
 - Sidebar + navbar composition (header 54px, sidebar 260px/71px collapsed)
@@ -175,6 +190,10 @@ Before building charts tables or forms detect the data source:
 - Using CircularProgress instead of Skeleton for content loading
 - Icon-only buttons without aria-label
 - Disabling focus outlines globally
+- **Workflow:** each screen as fresh prompt without MASTER lock (visual drift)
+- **Workflow:** codegen without Context Graph (duplicate components/hooks)
+- **Workflow:** no browser verification after implementation
+- **Workflow:** vague "fix spacing" without DOM element context
 
 ## Review Verdict Scale
 - Excellent

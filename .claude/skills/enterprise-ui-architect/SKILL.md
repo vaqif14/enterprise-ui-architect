@@ -1,11 +1,3 @@
----
-name: enterprise-ui-architect
-description: >
-  AI skill for building premium enterprise admin dashboards with MUI v7,
-  design system intelligence, backend integration patterns, package import
-  verification, and translation discipline.
----
-
 # Enterprise UI Architect
 
 ## Description
@@ -27,12 +19,102 @@ Use this skill when:
 - improving MUI architecture
 - enforcing design tokens
 - checking accessibility and responsiveness
+- **UI drifts after multiple screens** (run Unified Frontend Loop)
+- **shipping MVP/admin portals fast** without Figma handoff tax
+- **preventing duplicate components** (Context Graph before codegen)
+- **polishing live UI** with browser verification + sync back to code
 
 ## Core Philosophy
 Premium enterprise admin panels are the visual reference.
 MUI v7 is the implementation engine.
 Ant Design principles guide the architecture.
 Design system intelligence drives consistency.
+
+Bad AI frontend output is usually a **workflow problem**, not a model problem.
+Design intent, code reuse, and rendered UI must stay connected in one loop.
+
+## Unified Frontend Loop (Kombai-Inspired, Cursor-Native)
+
+Full reference: `references/unified-frontend-loop.md`
+
+Run this loop for new screens, multi-screen MVPs, and any task where visual drift or component duplication is a risk.
+
+### Phase 1 — Stack + Design System Lock
+Before the first screen:
+1. Detect stack from `package.json`, configs, and existing theme files.
+2. Lock design system via generator or `design-system/MASTER.md` (+ page overrides).
+3. Confirm ambiguous stacks with the user; do not silently switch libraries.
+
+```bash
+python scripts/search.py --query "saas" --design-system --persist --product "MyApp"
+```
+
+### Phase 2 — Design on Canvas (Not Prompt-Only)
+- Use Cursor Canvas or structured wireframes when layout direction is unclear.
+- Generate **3 concepts** when exploring; refine v2/v3 on the chosen direction.
+- Reuse a locked screen as visual base for related screens (client portal → admin portal).
+
+Variant prompt pattern:
+```
+Generate 3 design concepts for [PAGE]. Use design-system/MASTER.md.
+Concept 1 — [density/layout hero]. Concept 2 — [...]. Concept 3 — [...].
+```
+
+### Phase 3 — Context Graph (Mandatory Before Codegen)
+Build a semantic reuse map of the repo — Kombai's Context Graph equivalent:
+
+| Category | Examples to index |
+|---|---|
+| Components | PageLayout, Card, DataTable, StatusChip, DrawerForm |
+| Hooks / stores | useFilters, usePagination, auth/store modules |
+| Tokens | `theme.palette`, spacing, typography, customShadows |
+| Types / services | DTOs, form types, API clients, query keys |
+
+Rules:
+- **Import existing abstractions**; do not duplicate Button/Table/Chip/filter patterns.
+- List explicit reuse targets in plan or implementation notes.
+
+```bash
+python scripts/search.py --query "context graph reuse" --domain frontend-loop -n 10
+```
+
+### Phase 4 — Plan Mode (Complex Features)
+For business logic, multi-file flows, or API integration: write an approved plan first.
+Plan includes strategy, files, reuse map, states, responsive/a11y, verification steps.
+Then implement.
+
+### Phase 5 — Code + Static Verification
+Implement with MUI + RHF + TanStack standards from this skill.
+After edits: run `npx tsc --noEmit` and project lint on touched files; fix before claiming done.
+
+### Phase 6 — Browser Verification Loop
+Cursor equivalent of Kombai Browser:
+1. Start dev server; open localhost (browser MCP).
+2. Snapshot/screenshot at **375, 768, 1024, 1440**.
+3. Test flows: nav, filters, forms, empty states.
+4. Fix with **DOM-targeted context** (selector, computed styles, file path) — not vague "make it better."
+5. Use console/network evidence for runtime bugs.
+
+### Phase 7 — Sync Back
+- Code is source of truth after validation.
+- Update `design-system/MASTER.md` or `pages/*.md` if tokens/patterns changed.
+- Run pre-delivery checklist before shipping.
+
+```bash
+python scripts/search.py --query "dashboard" --domain pre-delivery-checklist -n 15
+```
+
+### Workflow Anti-Patterns
+- Each screen as a fresh prompt with no MASTER lock → visual drift.
+- Codegen without Context Graph → duplicate components/hooks.
+- Code review only, no rendered UI check → tablet/spacing bugs ship.
+- Vague visual prompts without element context → wasted iterations.
+
+Search workflow steps:
+```bash
+python scripts/search.py --query "browser verification" --domain frontend-loop -n 8
+python scripts/search.py --query "workflow duplicate" --domain anti-patterns -n 5
+```
 
 Premium enterprise admin panels provide:
 - premium admin dashboard feeling
@@ -414,6 +496,10 @@ Support these modes:
 - Design System Generation
 - Data Source Integration
 - Cursor Prompt Generation
+- **Design Exploration** (canvas/wireframe variants before code)
+- **Context Graph** (inventory + reuse map before codegen)
+- **Browser Verification** (live UI polish + flow testing)
+- **Unified Frontend Loop** (full Phase 1–7 end-to-end)
 
 ## Page Pattern Mapping
 Include detailed guidance for:
@@ -564,59 +650,6 @@ After install:
 - Auto-installing without user consent
 - Using different package managers within the same repo
 - Adding unused dependencies "just in case"
-
-## Translation Discipline (i18n)
-
-When building multi-language admin dashboards with `next-intl`, `react-i18next`, or similar:
-
-### 1. Always Use `t()` for User-Facing Text
-Every string visible to users must go through the translation function. No hardcoded labels, buttons, placeholders, or error messages.
-
-```tsx
-// ✅ Correct
-<Button>{t("form.save")}</Button>
-<CustomTextField label={t("auth.username")} />
-
-// ❌ Wrong
-<Button>Save</Button>
-<CustomTextField label="Username" />
-```
-
-### 2. Add Keys to All Locale Files
-When you introduce a new `t("key")` call, you **must** add that key to **every** `messages/*.json` file before finishing.
-
-```bash
-# Verify all keys exist in every locale
-enterprise-ui verify-i18n --src ./src
-```
-
-### 3. Namespace Convention
-Use `useTranslations("namespace")` for page-scoped keys. This keeps locale files organized and prevents key collisions.
-
-```tsx
-const t = useTranslations("admin.users");
-// keys become: admin.users.title, admin.users.column.name, etc.
-```
-
-### 4. Dynamic Keys
-Avoid dynamic template literals for translation keys when possible:
-
-```tsx
-// ✅ Prefer explicit mapping
-const statusKey = status === "active" ? "status.active" : "status.inactive";
-<Chip label={t(statusKey)} />
-
-// ❌ Avoid
-<Chip label={t(`status.${status}`)} />
-```
-
-If dynamic keys are unavoidable, ensure all possible values are documented and present in locale files.
-
-### 5. Pre-Delivery Check
-Before marking a feature complete:
-- [ ] All `t()` keys exist in every locale file
-- [ ] No hardcoded user-facing strings remain
-- [ ] `enterprise-ui verify-i18n` passes with zero missing keys
 
 ## Keyboard Navigation
 MUI components require specific keyboard patterns:

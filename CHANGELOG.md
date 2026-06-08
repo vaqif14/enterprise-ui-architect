@@ -2,6 +2,19 @@
 
 All notable changes to the Enterprise UI Architect skill.
 
+## 2.1.0 — 2026-06-09
+
+### Added
+- **Unified Frontend Loop** (Kombai-inspired, Cursor-native): 7-phase workflow connecting design system lock, canvas variants, Context Graph reuse, plan mode, code generation, browser verification, and sync-back
+- **`references/unified-frontend-loop.md`**: full workflow guide with Cursor equivalents for Design mode, Context Graphs, Plan mode, and browser polish loop
+- **`frontend-loop` data domain**: searchable workflow steps via `search.py`
+- New workflow anti-patterns (#58–#64): design drift, missing Context Graph, skipped browser verification, vague visual prompts, unsynced MASTER.md, plan-less multi-screen work, lint-only review
+- New operating modes: Design Exploration, Context Graph, Browser Verification, Unified Frontend Loop
+
+### Changed
+- SKILL.md, quick-reference, and skill-content templates updated with loop phases and triggers
+- `search.py` registers `frontend-loop` domain
+
 ## 2.0.0 — 2026-06-03
 
 ### Added

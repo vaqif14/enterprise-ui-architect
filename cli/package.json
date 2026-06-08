@@ -1,6 +1,6 @@
 {
   "name": "enterprise-ui-architect-cli",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "CLI for installing Enterprise UI Architect skill into AI coding assistants",
   "type": "module",
   "main": "dist/index.js",

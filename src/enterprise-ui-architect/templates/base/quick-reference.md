@@ -2,6 +2,22 @@
 
 ## Verdict
 Premium Admin = visual feel. MUI v7 = implementation. Ant Design = architecture discipline.
+Bad AI UI = workflow problem. Run the Unified Frontend Loop for multi-screen work.
+
+## Unified Frontend Loop (7 Phases)
+1. **Stack + design system lock** — detect stack; `MASTER.md` before first screen
+2. **Design on canvas** — 3 concepts → pick → v2/v3 refine; reuse visual base across screens
+3. **Context Graph** — inventory components/hooks/tokens; import don't duplicate
+4. **Plan mode** — approved plan for complex multi-file features
+5. **Code + static verify** — implement; `tsc` + lint on touched files
+6. **Browser verify** — dev server; snapshot 375/768/1024/1440; DOM-targeted fixes
+7. **Sync back** — update code + design-system docs; pre-delivery checklist
+
+```bash
+python scripts/search.py --query "context graph" --domain frontend-loop -n 10
+```
+
+Full guide: `references/unified-frontend-loop.md`
 
 ## Component Stack
 - UI: `@mui/material` v7
@@ -92,24 +108,6 @@ python scripts/search.py --query "saas" --design-system --persist --product "MyA
 - [ ] Use Skeleton for chart loading states
 - [ ] Implement retry + error fallback for unstable APIs
 - [ ] Use refetchInterval or WebSocket for real-time dashboards
-
-## Package Import Verification
-```bash
-enterprise-ui verify-imports --src ./src
-```
-- [ ] All new imports resolve to installed packages
-- [ ] Check package.json before adding imports
-- [ ] Ask user before installing missing packages
-- [ ] Post-install: run `npx tsc --noEmit`
-
-## Translation Verification
-```bash
-enterprise-ui verify-i18n --src ./src
-```
-- [ ] All user-facing strings use `t()` — no hardcoded text
-- [ ] Every `t("key")` exists in all `messages/*.json` files
-- [ ] Use `useTranslations("namespace")` for page-scoped keys
-- [ ] Avoid dynamic template literals for keys
 
 ## Pre-Delivery Checklist
 - [ ] All interactive elements have hover states and cursor-pointer

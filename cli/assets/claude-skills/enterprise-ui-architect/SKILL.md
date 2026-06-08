@@ -1,13 +1,3 @@
----
-name: enterprise-ui-architect
-description: >
-  AI skill for building premium enterprise admin dashboards with MUI v7,
-  design system intelligence, and backend integration patterns.
-  Combines enterprise-inspired visual composition with MUI v7 component
-  implementation, Ant Design-level engineering discipline, TypeScript-first
-  patterns, token-based styling, accessibility, and production-ready state handling.
----
-
 # Enterprise UI Architect
 
 ## Description
@@ -29,12 +19,102 @@ Use this skill when:
 - improving MUI architecture
 - enforcing design tokens
 - checking accessibility and responsiveness
+- **UI drifts after multiple screens** (run Unified Frontend Loop)
+- **shipping MVP/admin portals fast** without Figma handoff tax
+- **preventing duplicate components** (Context Graph before codegen)
+- **polishing live UI** with browser verification + sync back to code
 
 ## Core Philosophy
 Premium enterprise admin panels are the visual reference.
 MUI v7 is the implementation engine.
 Ant Design principles guide the architecture.
 Design system intelligence drives consistency.
+
+Bad AI frontend output is usually a **workflow problem**, not a model problem.
+Design intent, code reuse, and rendered UI must stay connected in one loop.
+
+## Unified Frontend Loop (Kombai-Inspired, Cursor-Native)
+
+Full reference: `references/unified-frontend-loop.md`
+
+Run this loop for new screens, multi-screen MVPs, and any task where visual drift or component duplication is a risk.
+
+### Phase 1 — Stack + Design System Lock
+Before the first screen:
+1. Detect stack from `package.json`, configs, and existing theme files.
+2. Lock design system via generator or `design-system/MASTER.md` (+ page overrides).
+3. Confirm ambiguous stacks with the user; do not silently switch libraries.
+
+```bash
+python scripts/search.py --query "saas" --design-system --persist --product "MyApp"
+```
+
+### Phase 2 — Design on Canvas (Not Prompt-Only)
+- Use Cursor Canvas or structured wireframes when layout direction is unclear.
+- Generate **3 concepts** when exploring; refine v2/v3 on the chosen direction.
+- Reuse a locked screen as visual base for related screens (client portal → admin portal).
+
+Variant prompt pattern:
+```
+Generate 3 design concepts for [PAGE]. Use design-system/MASTER.md.
+Concept 1 — [density/layout hero]. Concept 2 — [...]. Concept 3 — [...].
+```
+
+### Phase 3 — Context Graph (Mandatory Before Codegen)
+Build a semantic reuse map of the repo — Kombai's Context Graph equivalent:
+
+| Category | Examples to index |
+|---|---|
+| Components | PageLayout, Card, DataTable, StatusChip, DrawerForm |
+| Hooks / stores | useFilters, usePagination, auth/store modules |
+| Tokens | `theme.palette`, spacing, typography, customShadows |
+| Types / services | DTOs, form types, API clients, query keys |
+
+Rules:
+- **Import existing abstractions**; do not duplicate Button/Table/Chip/filter patterns.
+- List explicit reuse targets in plan or implementation notes.
+
+```bash
+python scripts/search.py --query "context graph reuse" --domain frontend-loop -n 10
+```
+
+### Phase 4 — Plan Mode (Complex Features)
+For business logic, multi-file flows, or API integration: write an approved plan first.
+Plan includes strategy, files, reuse map, states, responsive/a11y, verification steps.
+Then implement.
+
+### Phase 5 — Code + Static Verification
+Implement with MUI + RHF + TanStack standards from this skill.
+After edits: run `npx tsc --noEmit` and project lint on touched files; fix before claiming done.
+
+### Phase 6 — Browser Verification Loop
+Cursor equivalent of Kombai Browser:
+1. Start dev server; open localhost (browser MCP).
+2. Snapshot/screenshot at **375, 768, 1024, 1440**.
+3. Test flows: nav, filters, forms, empty states.
+4. Fix with **DOM-targeted context** (selector, computed styles, file path) — not vague "make it better."
+5. Use console/network evidence for runtime bugs.
+
+### Phase 7 — Sync Back
+- Code is source of truth after validation.
+- Update `design-system/MASTER.md` or `pages/*.md` if tokens/patterns changed.
+- Run pre-delivery checklist before shipping.
+
+```bash
+python scripts/search.py --query "dashboard" --domain pre-delivery-checklist -n 15
+```
+
+### Workflow Anti-Patterns
+- Each screen as a fresh prompt with no MASTER lock → visual drift.
+- Codegen without Context Graph → duplicate components/hooks.
+- Code review only, no rendered UI check → tablet/spacing bugs ship.
+- Vague visual prompts without element context → wasted iterations.
+
+Search workflow steps:
+```bash
+python scripts/search.py --query "browser verification" --domain frontend-loop -n 8
+python scripts/search.py --query "workflow duplicate" --domain anti-patterns -n 5
+```
 
 Premium enterprise admin panels provide:
 - premium admin dashboard feeling
@@ -416,6 +496,10 @@ Support these modes:
 - Design System Generation
 - Data Source Integration
 - Cursor Prompt Generation
+- **Design Exploration** (canvas/wireframe variants before code)
+- **Context Graph** (inventory + reuse map before codegen)
+- **Browser Verification** (live UI polish + flow testing)
+- **Unified Frontend Loop** (full Phase 1–7 end-to-end)
 
 ## Page Pattern Mapping
 Include detailed guidance for:
@@ -521,6 +605,51 @@ Avoid:
 - heavy inline `sx` props on generic primitives
 - business-specific styling inside generic UI primitives
 - using `item` prop on MUI v7 `Grid`
+
+## Package Import Discipline
+
+When adding or modifying imports in any module:
+
+### 1. Verify Package Exists
+Before writing a new import statement, check `package.json` (and `package-lock.json` / `yarn.lock` / `pnpm-lock.yaml`) to confirm the package is installed.
+
+```bash
+# Quick check
+grep '"package-name"' package.json
+```
+
+### 2. If Package Is Missing
+**Do NOT install automatically.** Present the user with:
+- The missing package name
+- The import path that triggered the need
+- The recommended install command
+- Ask for explicit confirmation
+
+Example prompt:
+```
+⚠️  Missing package: @mui/x-data-grid
+    Required by: src/features/admin/components/DataTable.tsx
+    Install: npm install @mui/x-data-grid
+    Proceed? (y/n)
+```
+
+### 3. Install Only After Confirmation
+If user confirms, install with the project's package manager:
+- Detect from lockfile: `package-lock.json` → npm, `yarn.lock` → yarn, `pnpm-lock.yaml` → pnpm
+- Respect existing version constraints in `package.json`
+- Update lockfile alongside install
+
+### 4. Post-Install Verification
+After install:
+1. Run TypeScript check: `npx tsc --noEmit`
+2. Verify the import resolves without error
+3. Confirm no unused imports were added (tree-shaking friendly)
+
+### 5. Anti-Pattern
+- Adding imports for packages not in `package.json`
+- Auto-installing without user consent
+- Using different package managers within the same repo
+- Adding unused dependencies "just in case"
 
 ## Keyboard Navigation
 MUI components require specific keyboard patterns:
