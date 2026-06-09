@@ -2,7 +2,7 @@
   "name": "enterprise-ui-architect",
   "displayName": "Enterprise UI Architect",
   "description": "AI skill for building premium enterprise admin interfaces with MUI v7 component implementation, Ant Design-level architecture discipline, TypeScript-first patterns, token-based styling, accessibility, and production-ready state handling.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "NextLevelBuilder",
   "license": "MIT",
   "repository": {

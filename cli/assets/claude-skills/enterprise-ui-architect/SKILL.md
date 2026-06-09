@@ -33,11 +33,54 @@ Design system intelligence drives consistency.
 Bad AI frontend output is usually a **workflow problem**, not a model problem.
 Design intent, code reuse, and rendered UI must stay connected in one loop.
 
+## Stack Router (Mixed MUI + shadcn)
+
+**Run this before any UI implementation.** Detect stack from `package.json` and `components.json`.
+
+```bash
+python scripts/search.py --query "shadcn mui" --domain stack-profiles -n 6
+```
+
+| Detected | Primary skill | Phase 5 implementation | Loop phases |
+|---|---|---|---|
+| `@mui/material` present | **enterprise-ui-architect** (full) | MUI + RHF + TanStack | 1–7 |
+| `components.json` + no MUI | **shadcn** skill | shadcn/ui + Tailwind | 1, 2, 4, 6, 7 only |
+| Both MUI + shadcn | **enterprise-ui-architect** + routing | Per-surface: admin=MUI, marketing=shadcn | 1–7 selective |
+| Tailwind `ui/` only (no MUI, no shadcn) | **impeccable** + process phases | Custom Tailwind primitives | 1, 2, 4, 6, 7 only |
+
+Rules:
+1. **Never emit MUI imports** into a repo without `@mui/material` in `package.json`.
+2. **Never apply MUI Table/Form/Theme standards** on shadcn projects — use portable checklists only.
+3. Document routing in `design-system/STACK.md` (MUI | shadcn | hybrid + surface map).
+4. **Naming trap:** `@/components/ui/Card` may be Tailwind, not MUI — verify implementation file.
+
 ## Unified Frontend Loop (Kombai-Inspired, Cursor-Native)
 
 Full reference: `references/unified-frontend-loop.md`
 
 Run this loop for new screens, multi-screen MVPs, and any task where visual drift or component duplication is a risk.
+
+### Loop Gate (Mandatory for Multi-Screen UI)
+
+If the task adds or changes **2+ screens**, **a new admin portal section**, or **any feature where visual drift is a risk**, the agent **MUST** output this checklist **before writing code**:
+
+```
+Unified Frontend Loop — Phase Checklist
+[ ] 0 Stack Router — MUI / shadcn / hybrid decided; STACK.md path noted
+[ ] 1 Stack + design system lock — MASTER.md or theme source identified
+[ ] 2 Design path — canvas variants OR reference screen chosen
+[ ] 3 Context Graph — scripts/context-graph.py run OR reuse map listed
+[ ] 4 Plan — approved for complex/multi-file work (skip if trivial)
+[ ] 5 Code — stack-appropriate implementation (MUI OR shadcn, not both blindly)
+[ ] 6 Browser verify — dev server + breakpoints 375/768/1024/1440
+[ ] 7 Sync back — MASTER.md / CONTEXT_GRAPH.md updated; verify-loop pass
+```
+
+Then run:
+```bash
+enterprise-ui verify-loop
+python scripts/context-graph.py --root . --scan src
+```
 
 ### Phase 1 — Stack + Design System Lock
 Before the first screen:
@@ -73,8 +116,10 @@ Build a semantic reuse map of the repo — Kombai's Context Graph equivalent:
 Rules:
 - **Import existing abstractions**; do not duplicate Button/Table/Chip/filter patterns.
 - List explicit reuse targets in plan or implementation notes.
+- **Map skill names to repo names** (e.g. `PageLayout` → `PageScaffold` if that is what exists).
 
 ```bash
+python scripts/context-graph.py --root . --scan src
 python scripts/search.py --query "context graph reuse" --domain frontend-loop -n 10
 ```
 
@@ -98,9 +143,12 @@ Cursor equivalent of Kombai Browser:
 ### Phase 7 — Sync Back
 - Code is source of truth after validation.
 - Update `design-system/MASTER.md` or `pages/*.md` if tokens/patterns changed.
-- Run pre-delivery checklist before shipping.
+- Update `design-system/CONTEXT_GRAPH.md` if new reusable abstractions were added.
+- Run pre-delivery checklist and loop verification before shipping.
 
 ```bash
+enterprise-ui verify-loop
+enterprise-ui verify-loop --tsc
 python scripts/search.py --query "dashboard" --domain pre-delivery-checklist -n 15
 ```
 

@@ -20,6 +20,20 @@
 
 It is not a component library. It is a **decision framework** that tells AI *how* to compose MUI components into professional admin UIs.
 
+### Unified Frontend Loop (v2.2)
+
+Seven-phase workflow (Kombai-inspired, Cursor-native): stack lock → design variants → Context Graph → plan → code → browser verify → sync back.
+
+```bash
+python scripts/context-graph.py --root . --scan src
+enterprise-ui verify-loop
+enterprise-ui verify-loop --tsc
+```
+
+**Mixed stack?** Run Stack Router first — MUI repos use the full skill; shadcn-only repos use `shadcn` skill for implementation and borrow process phases from here.
+
+See `src/enterprise-ui-architect/references/unified-frontend-loop.md` and `references/audit-live-evidence.md`.
+
 ---
 
 ## Philosophy

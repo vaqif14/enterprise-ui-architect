@@ -14,10 +14,20 @@ Bad AI UI = workflow problem. Run the Unified Frontend Loop for multi-screen wor
 7. **Sync back** — update code + design-system docs; pre-delivery checklist
 
 ```bash
+python scripts/search.py --query "shadcn mui" --domain stack-profiles -n 6
+python scripts/context-graph.py --root . --scan src
+enterprise-ui verify-loop
 python scripts/search.py --query "context graph" --domain frontend-loop -n 10
 ```
 
 Full guide: `references/unified-frontend-loop.md`
+
+## Stack Router
+| Signal | Route |
+|---|---|
+| `@mui/material` | Full skill (phases 1–7) |
+| `components.json` + no MUI | shadcn skill for code; EUI for process only |
+| Both | `design-system/STACK.md` per-surface map |
 
 ## Component Stack
 - UI: `@mui/material` v7

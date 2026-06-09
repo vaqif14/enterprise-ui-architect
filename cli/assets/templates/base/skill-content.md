@@ -18,6 +18,15 @@ Includes a **Kombai-inspired Unified Frontend Loop** adapted for Cursor: stack l
 
 See `references/unified-frontend-loop.md` for full workflow.
 
+## Stack Router (Summary)
+Detect stack before codegen. MUI repos → full skill. shadcn-only → `shadcn` skill for Phase 5; borrow loop phases 1/2/4/6/7 from here. Hybrid → `design-system/STACK.md`.
+
+```bash
+python scripts/search.py --query "shadcn" --domain stack-profiles -n 3
+enterprise-ui verify-loop
+python scripts/context-graph.py --root . --scan src
+```
+
 ## Visual Direction (Enterprise Admin)
 - Card-based layouts with consistent padding and elevation
 - Sidebar + navbar composition (header 54px, sidebar 260px/71px collapsed)

@@ -1,13 +1,39 @@
 ---
-description: Enterprise UI Architect — build premium admin UIs with MUI v7, Ant Design discipline, design system intelligence, backend data integration, and i18n/package verification
-globs: "**/*.{tsx,jsx,vue,ts,js}"
+description: Enterprise UI Architect — MUI v7 admin UIs, Unified Frontend Loop, stack routing for mixed MUI/shadcn repos
+globs: **/*.{tsx,jsx,vue,ts,js}
 alwaysApply: false
 ---
 
 # Enterprise UI Architect
 
+# Enterprise UI Architect — Skill Content
+
 ## What This Skill Does
-Guides AI coding assistants to build premium admin dashboards with MUI v7 components, Ant Design-level engineering discipline, design system intelligence, backend integration patterns, and translation/package verification.
+Guides AI coding assistants to build premium admin dashboards that use MUI v7 components, follow Ant Design engineering discipline, and leverage design system intelligence for consistent, industry-appropriate UIs.
+
+Includes a **Kombai-inspired Unified Frontend Loop** adapted for Cursor: stack lock → canvas design → Context Graph reuse → plan → code → browser verification → sync back.
+
+## Unified Frontend Loop (Summary)
+| Phase | Kombai concept | Cursor equivalent |
+|---|---|---|
+| 1 | Stack + theme lock | Repo scan + `design-system/MASTER.md` |
+| 2 | Design canvas + variants | Canvas / wireframes; 3 concepts + v2/v3 |
+| 3 | Context Graphs | Component/hook/token inventory before codegen |
+| 4 | Plan mode | Approved plan for complex features |
+| 5 | Code mode | MUI + RHF + TanStack implementation |
+| 6 | Kombai Browser | browser MCP + DOM-targeted fixes |
+| 7 | Sync loop | Code + design-system doc updates |
+
+See `references/unified-frontend-loop.md` for full workflow.
+
+## Stack Router (Summary)
+Detect stack before codegen. MUI repos → full skill. shadcn-only → `shadcn` skill for Phase 5; borrow loop phases 1/2/4/6/7 from here. Hybrid → `design-system/STACK.md`.
+
+```bash
+python scripts/search.py --query "shadcn" --domain stack-profiles -n 3
+enterprise-ui verify-loop
+python scripts/context-graph.py --root . --scan src
+```
 
 ## Visual Direction (Enterprise Admin)
 - Card-based layouts with consistent padding and elevation
@@ -44,7 +70,7 @@ Guides AI coding assistants to build premium admin dashboards with MUI v7 compon
 - Icons: Tabler Icons
 - Data Fetching: TanStack Query (preferred) or SWR
 - Real-Time: WebSocket / STOMP / Socket.io / SSE
-- API Mocking: MSW (Mock Service Worker)
+- API Mocking: MSW (Mock Service Worker) for development
 
 ## Design System Generation
 Generate a complete design system for any admin product:
@@ -60,56 +86,26 @@ Persist for cross-session use:
 python scripts/search.py --query "saas" --design-system --persist --product "MyApp"
 ```
 
-## Backend Data Detection & Integration
-Before building any chart, table, or form, detect the data source:
-
-| Scenario | Approach | Mock Strategy |
-|---|---|---|
-| Backend exists + API documented | Connect real API immediately | None |
-| Backend exists + API not documented | Explore endpoints, reverse engineer | MSW with discovered endpoints |
-| Backend in development | MSW with agreed contract | MSW browser + server worker |
-| No backend | json-server or localStorage | `db.json` |
-| Backend unstable | Retry logic + circuit breaker | MSW fallback mode |
-
-### Real-Time Patterns
-| Backend | Frontend Pattern |
-|---|---|
-| Spring Boot + STOMP | SockJS + STOMP.js + Zustand/TanStack Query |
-| Node.js + Socket.io | Socket.io-client + event-driven store |
-| Any + SSE | EventSource with reconnect polyfill |
-| Any + polling | TanStack Query `refetchInterval` |
-
-### Chart + API Mapping
-- Use TanStack Query `useQuery` for chart data
-- Map API response → chart format via **adapter function**
-- Use `staleTime` + `refetchInterval` for real-time dashboards
-- Show **Skeleton** (not spinner) while chart data loads
-- Use `placeholderData` to show previous data while refetching
-
-## Translation Discipline (i18n)
-When building multi-language admin dashboards:
-
-1. **Always use `t()` for user-facing text** — No hardcoded labels, buttons, placeholders
-2. **Add keys to all locale files** — When introducing `t("key")`, add to every `messages/*.json`
-3. **Namespace convention** — Use `useTranslations("namespace")` for page-scoped keys
-4. **Dynamic keys** — Avoid template literals; use explicit mapping when possible
-5. **Pre-delivery** — Run `enterprise-ui verify-i18n --src ./src`
-
-## Package Import Discipline
-When adding imports:
-
-1. **Verify package exists** in `package.json` before writing import
-2. **If missing, ask user** — Do NOT auto-install. Present package name, import path, install command
-3. **Install only after confirmation** — Detect package manager from lockfile
-4. **Post-install** — Run `npx tsc --noEmit` to verify
-5. **Check** — `enterprise-ui verify-imports --src ./src`
-
 ## Industry-Specific Reasoning
 15 admin industries with tailored rules:
-SaaS, Fintech, Healthcare, E-commerce, Logistics, HR, CRM, ERP, Education, Government, Cybersecurity, Real Estate, Energy, Media, Nonprofit.
+- SaaS / B2B Platform
+- Fintech / Banking
+- Healthcare / Medical
+- E-commerce Admin
+- Logistics / Supply Chain
+- HR / People Management
+- CRM / Sales
+- ERP / Manufacturing
+- Education / LMS
+- Government / Public Sector
+- Cybersecurity / SOC
+- Real Estate / Property
+- Energy / Utilities
+- Media / Content Management
+- Nonprofit / NGO
 
 ## UI Styles for Admin Dashboards
-10 styles rated for admin suitability:
+15 styles rated for admin suitability:
 - Minimalism & Swiss Style (10/10)
 - Bento Box Grid (10/10)
 - Dark Mode OLED (9/10)
@@ -120,6 +116,21 @@ SaaS, Fintech, Healthcare, E-commerce, Logistics, HR, CRM, ERP, Education, Gover
 - Accessible & Inclusive (10/10)
 - Glassmorphism (7/10)
 - AI-Native UI (7/10)
+
+## Color Palettes
+20 admin-specific palettes matched to industries.
+
+## Typography Pairings
+15 curated font pairings with Google Fonts imports.
+
+## Charts for Dashboards
+25 chart types mapped to admin use cases:
+- Revenue/Growth: Line, Area, Sparkline
+- Comparisons: Bar, Grouped Bar, Horizontal Bar
+- Proportions: Donut, Pie, Treemap
+- Real-time: Gauge, Metric Cards
+- Project: Gantt, Timeline
+- Geographic: Map, Choropleth
 
 ## Page Patterns Quick Map
 | Page Type | Visual Feel | MUI + RHF Architecture |
@@ -133,7 +144,414 @@ SaaS, Fintech, Healthcare, E-commerce, Logistics, HR, CRM, ERP, Education, Gover
 | Auth | Centered card + blank layout | BlankLayout + MUI Card + RHF + fullWidth buttons |
 | Blank | Full-width centered no sidebar | BlankLayout + centered content |
 
+## Component Standards Quick Map
+| Component | Key Rules |
+|---|---|
+| PageLayout | Consistent padding, max-width, background from theme, layout modes |
+| Card | MUI Card + CardHeader + CardContent + CardActions + Divider |
+| DataTable | TanStack Table, typed columns, rowKey, loading/empty/error, MUI Pagination rounded tonal |
+| FormSection | MUI Card + section title + Divider + Grid spacing 6 |
+| StatusChip | MUI Chip, variant tonal, size small, icon + text, semantic color |
+| Drawer | MUI Drawer, anchor right, width 300-400px, manual reset on close |
+| Dialog | MUI Dialog, maxWidth md for edit, scroll body, closeAfterTransition false for confirmations |
+| SubmitBar | MUI CardActions, Button contained primary + tonal secondary, loading, dirty guard |
+| CustomTextField | MUI TextField variant filled with styled overrides, label above input, slotProps inputLabel shrink true |
+| StatCard | MUI Card, horizontal or vertical, avatar + tonal Chip, border accent optional |
+| Button | MUI Button, variant contained/tonal/outlined, loading via CircularProgress, active scale 0.98 |
+| Pagination | MUI Pagination, shape rounded, variant tonal, connected to table state |
+| OptionMenu | MUI Menu + IconButton trigger, typed options array |
+| Skeleton | MUI Skeleton for known-shape content loading, not CircularProgress |
+| ErrorBoundary | React ErrorBoundary at page/layout level with fallback UI |
+
+## Backend Data Detection
+Before building charts tables or forms detect the data source:
+- Backend exists + API documented → Connect real API immediately
+- Backend exists + API not documented → Explore endpoints reverse engineer
+- Backend in development → MSW or json-server with agreed contract
+- No backend → json-server or localStorage mock
+- Backend unstable → Retry logic + circuit breaker + MSW fallback
+
+### Chart + Backend Integration
+- Use TanStack Query `useQuery` for chart data
+- Map API response to chart format in adapter function
+- Use `staleTime` and `refetchInterval` for real-time dashboards
+- Show Skeleton (not spinner) while chart data loads
+- Use `placeholderData` to show previous data while refetching
+
+### Real-Time Patterns
+| Backend | Frontend Pattern |
+|---|---|
+| Spring Boot + STOMP | SockJS + STOMP.js + Zustand |
+| Node.js + Socket.io | Socket.io-client + event store |
+| Any + SSE | EventSource with reconnect |
+| Any + polling | TanStack Query `refetchInterval` |
+
+## Anti-Patterns to Catch
+- Complex forms inside Dialogs
+- Inline table column definitions
+- Random hex colors or margins
+- Missing loading/empty/error states
+- Color-only status indicators
+- Missing dirty form guard
+- Inline sx props on generic primitives
+- Vertical table borders
+- Floating labels without shrink
+- Using MUI TablePagination for logic instead of TanStack state
+- Using native MUI Table without TanStack react-table
+- Missing CardHeader/CardContent/CardActions structure
+- Using `item` prop on MUI v7 Grid
+- Forgetting `declare module` for `tonal` variant
+- Using MUI v7 without AppRouterCacheProvider in Next.js
+- Using rules inline alongside schema resolver
+- No Error Boundaries
+- Using CircularProgress instead of Skeleton for content loading
+- Icon-only buttons without aria-label
+- Disabling focus outlines globally
+- **Workflow:** each screen as fresh prompt without MASTER lock (visual drift)
+- **Workflow:** codegen without Context Graph (duplicate components/hooks)
+- **Workflow:** no browser verification after implementation
+- **Workflow:** vague "fix spacing" without DOM element context
+
+## Review Verdict Scale
+- Excellent
+- Good but needs refinement
+- Visually acceptable but structurally weak
+- Not production-ready
+- Needs redesign
+
+## Injected Standards
+
+## Stack Router (Mixed MUI + shadcn)
+
+**Run this before any UI implementation.** Detect stack from `package.json` and `components.json`.
+
+```bash
+python scripts/search.py --query "shadcn mui" --domain stack-profiles -n 6
+```
+
+| Detected | Primary skill | Phase 5 implementation | Loop phases |
+|---|---|---|---|
+| `@mui/material` present | **enterprise-ui-architect** (full) | MUI + RHF + TanStack | 1–7 |
+| `components.json` + no MUI | **shadcn** skill | shadcn/ui + Tailwind | 1, 2, 4, 6, 7 only |
+| Both MUI + shadcn | **enterprise-ui-architect** + routing | Per-surface: admin=MUI, marketing=shadcn | 1–7 selective |
+| Tailwind `ui/` only (no MUI, no shadcn) | **impeccable** + process phases | Custom Tailwind primitives | 1, 2, 4, 6, 7 only |
+
+Rules:
+1. **Never emit MUI imports** into a repo without `@mui/material` in `package.json`.
+2. **Never apply MUI Table/Form/Theme standards** on shadcn projects — use portable checklists only.
+3. Document routing in `design-system/STACK.md` (MUI | shadcn | hybrid + surface map).
+4. **Naming trap:** `@/components/ui/Card` may be Tailwind, not MUI — verify implementation file.
+
+## Unified Frontend Loop (Kombai-Inspired, Cursor-Native)
+
+Full reference: `references/unified-frontend-loop.md`
+
+Run this loop for new screens, multi-screen MVPs, and any task where visual drift or component duplication is a risk.
+
+### Loop Gate (Mandatory for Multi-Screen UI)
+
+If the task adds or changes **2+ screens**, **a new admin portal section**, or **any feature where visual drift is a risk**, the agent **MUST** output this checklist **before writing code**:
+
+```
+Unified Frontend Loop — Phase Checklist
+[ ] 0 Stack Router — MUI / shadcn / hybrid decided; STACK.md path noted
+[ ] 1 Stack + design system lock — MASTER.md or theme source identified
+[ ] 2 Design path — canvas variants OR reference screen chosen
+[ ] 3 Context Graph — scripts/context-graph.py run OR reuse map listed
+[ ] 4 Plan — approved for complex/multi-file work (skip if trivial)
+[ ] 5 Code — stack-appropriate implementation (MUI OR shadcn, not both blindly)
+[ ] 6 Browser verify — dev server + breakpoints 375/768/1024/1440
+[ ] 7 Sync back — MASTER.md / CONTEXT_GRAPH.md updated; verify-loop pass
+```
+
+Then run:
+```bash
+enterprise-ui verify-loop
+python scripts/context-graph.py --root . --scan src
+```
+
+### Phase 1 — Stack + Design System Lock
+Before the first screen:
+1. Detect stack from `package.json`, configs, and existing theme files.
+2. Lock design system via generator or `design-system/MASTER.md` (+ page overrides).
+3. Confirm ambiguous stacks with the user; do not silently switch libraries.
+
+```bash
+python scripts/search.py --query "saas" --design-system --persist --product "MyApp"
+```
+
+### Phase 2 — Design on Canvas (Not Prompt-Only)
+- Use Cursor Canvas or structured wireframes when layout direction is unclear.
+- Generate **3 concepts** when exploring; refine v2/v3 on the chosen direction.
+- Reuse a locked screen as visual base for related screens (client portal → admin portal).
+
+Variant prompt pattern:
+```
+Generate 3 design concepts for [PAGE]. Use design-system/MASTER.md.
+Concept 1 — [density/layout hero]. Concept 2 — [...]. Concept 3 — [...].
+```
+
+### Phase 3 — Context Graph (Mandatory Before Codegen)
+Build a semantic reuse map of the repo — Kombai's Context Graph equivalent:
+
+| Category | Examples to index |
+|---|---|
+| Components | PageLayout, Card, DataTable, StatusChip, DrawerForm |
+| Hooks / stores | useFilters, usePagination, auth/store modules |
+| Tokens | `theme.palette`, spacing, typography, customShadows |
+| Types / services | DTOs, form types, API clients, query keys |
+
+Rules:
+- **Import existing abstractions**; do not duplicate Button/Table/Chip/filter patterns.
+- List explicit reuse targets in plan or implementation notes.
+- **Map skill names to repo names** (e.g. `PageLayout` → `PageScaffold` if that is what exists).
+
+```bash
+python scripts/context-graph.py --root . --scan src
+python scripts/search.py --query "context graph reuse" --domain frontend-loop -n 10
+```
+
+### Phase 4 — Plan Mode (Complex Features)
+For business logic, multi-file flows, or API integration: write an approved plan first.
+Plan includes strategy, files, reuse map, states, responsive/a11y, verification steps.
+Then implement.
+
+### Phase 5 — Code + Static Verification
+Implement with MUI + RHF + TanStack standards from this skill.
+After edits: run `npx tsc --noEmit` and project lint on touched files; fix before claiming done.
+
+### Phase 6 — Browser Verification Loop
+Cursor equivalent of Kombai Browser:
+1. Start dev server; open localhost (browser MCP).
+2. Snapshot/screenshot at **375, 768, 1024, 1440**.
+3. Test flows: nav, filters, forms, empty states.
+4. Fix with **DOM-targeted context** (selector, computed styles, file path) — not vague "make it better."
+5. Use console/network evidence for runtime bugs.
+
+### Phase 7 — Sync Back
+- Code is source of truth after validation.
+- Update `design-system/MASTER.md` or `pages/*.md` if tokens/patterns changed.
+- Update `design-system/CONTEXT_GRAPH.md` if new reusable abstractions were added.
+- Run pre-delivery checklist and loop verification before shipping.
+
+```bash
+enterprise-ui verify-loop
+enterprise-ui verify-loop --tsc
+python scripts/search.py --query "dashboard" --domain pre-delivery-checklist -n 15
+```
+
+### Workflow Anti-Patterns
+- Each screen as a fresh prompt with no MASTER lock → visual drift.
+- Codegen without Context Graph → duplicate components/hooks.
+- Code review only, no rendered UI check → tablet/spacing bugs ship.
+- Vague visual prompts without element context → wasted iterations.
+
+Search workflow steps:
+```bash
+python scripts/search.py --query "browser verification" --domain frontend-loop -n 8
+python scripts/search.py --query "workflow duplicate" --domain anti-patterns -n 5
+```
+
+Premium enterprise admin panels provide:
+- premium admin dashboard feeling
+- card composition
+- sidebar/navbar inspiration
+- layout hierarchy
+- dashboard page rhythm
+- polished status chips
+- spacing inspiration
+- visual hierarchy
+
+MUI v7 provides:
+- production-grade React components
+- theme system with CSS variables
+- emotion/styled styling
+- accessibility baseline
+- rtl support
+- dense admin-friendly sizing
+
+Ant Design principles provide:
+- component API discipline
+- TypeScript-first props
+- predictable Form/Table patterns
+- Drawer/Dialog usage rules
+- design token thinking
+- enterprise interaction quality
+- reusable abstractions
+- accessibility and state discipline
+
+## When to Apply
+Use this skill when:
+- building admin dashboards with MUI
+- building CRUD list pages with MUI + TanStack Table
+- building complex forms with MUI + react-hook-form
+- building detail pages with MUI
+- building settings pages with MUI
+- building wizard/multi-step forms with MUI
+- building auth pages with MUI
+- generating a complete design system for an admin product
+- reviewing UI implementation quality
+- refactoring tables, forms, cards, drawers, dialogs, sidebars, navbars
+- improving visual polish
+- improving MUI architecture
+- enforcing design tokens
+- checking accessibility and responsiveness
+- **UI drifts after multiple screens** (run Unified Frontend Loop)
+- **shipping MVP/admin portals fast** without Figma handoff tax
+- **preventing duplicate components** (Context Graph before codegen)
+- **polishing live UI** with browser verification + sync back to code
+
+## Drawer vs Dialog vs Page Rules
+Use Dialog for:
+- delete confirmation
+- simple yes/no confirmation
+- small focused form
+
+Use Drawer for:
+- quick create
+- quick edit
+- advanced filters
+- record preview
+- side details
+
+Use full page for:
+- complex forms
+- multi-section edit
+- workflows
+- heavy validation
+- wizard-like creation
+
+Never put complex multi-section forms inside a small dialog.
+
+## Table Standard
+Every production table should use `@tanstack/react-table` and support:
+- typed column config via `createColumnHelper`
+- stable row keys
+- sorting
+- filtering (faceted + global)
+- search (debounced 500ms)
+- pagination via MUI `Pagination` (`shape='rounded'` `variant='tonal'`)
+- server-side pagination when needed
+- loading state
+- empty state
+- error state
+- row actions via `OptionMenu`
+- optional bulk actions via `rowSelection`
+- status chips via MUI `Chip` (`variant='tonal'`)
+- formatted date/number values
+- responsive behavior (horizontal scroll)
+- accessible headers
+- controlled filter/sort/page state
+- header height 56px, body row height 50px
+- horizontal borders only, no vertical borders
+- first/last column padding 24px, internal columns 16px
+
+## Form Standard
+Every production form should use `react-hook-form` and support:
+- typed values via `defaultValues` generic
+- validation rules (inline or schema via resolver)
+- field-level errors via `formState.errors`
+- helper text under fields
+- required indicators
+- submit loading via `CircularProgress` in button
+- disabled state
+- cancel/reset via `reset()`
+- dirty state protection
+- responsive field grid via MUI `Grid` (`spacing={6}`)
+- logical sections separated by `Divider` + `Typography` headers
+- accessible labels (`htmlFor` on label)
+- success/error feedback
+- MUI `TextField` with label-above-input pattern (`slotProps={{ inputLabel: { shrink: true, style: { transform: 'none' } } }}`)
+- focus state: 2px border + `primary-sm` shadow
+- start adornments for icons via `InputAdornment` in `slotProps={{ input: { startAdornment: ... } }}`
+
+## Theme and Styling Standard
+Prefer:
+- MUI theme tokens (`theme.palette`, `theme.spacing`, `theme.shape`)
+- CSS variables via MUI `cssVariables`
+- shared spacing scale (`theme.spacing(factor)`)
+- shared typography scale (`theme.typography`)
+- semantic color roles (`primary`, `success`, `warning`, `error`, `info`)
+- reusable variants (`contained`, `tonal`, `outlined`)
+- Tailwind utilities for layout/flex/grid only
+- `slotProps` over legacy `InputProps` / `InputLabelProps`
+
+Avoid:
+- random hex colors
+- random margins
+- random font sizes
+- inconsistent border radius
+- one-off shadows
+- heavy inline `sx` props on generic primitives
+- business-specific styling inside generic UI primitives
+- using `item` prop on MUI v7 `Grid`
+
+## Review Output Format
+When reviewing implementation, always output:
+
+### 1. Verdict
+Choose:
+- Excellent
+- Good but needs refinement
+- Visually acceptable but structurally weak
+- Not production-ready
+- Needs redesign
+
+### 2. Premium Admin Visual Alignment
+Evaluate:
+- layout
+- cards
+- spacing
+- dashboard feel
+- sidebar/navbar consistency
+- hierarchy
+- table/form presentation
+
+### 3. MUI Architecture Alignment
+Evaluate:
+- component API
+- reusable abstractions
+- typed props
+- form architecture (RHF + Controller)
+- table architecture (TanStack + MUI Pagination)
+- drawer/dialog usage
+- theme/token usage
+- predictable states
+
+### 4. Main Problems
+For each:
+- what is wrong
+- why it matters
+- how to fix it
+
+### 5. Production Readiness Score
+Score 1-10:
+- Premium Admin Visual Quality
+- MUI Architecture Quality
+- Component Reusability
+- Form Quality
+- Table Quality
+- State Handling
+- Responsiveness
+- Accessibility
+- Maintainability
+- Production Readiness
+
+### 6. Exact Fix Plan
+Step-by-step practical fixes.
+
+### 7. Final Decision
+Choose:
+- approve
+- approve with minor changes
+- request changes
+- reject and redesign
+
 ## Rules
+
+- Run Stack Router before implementation: MUI full skill vs shadcn process-only vs hybrid per STACK.md.
+- For multi-screen UI tasks, output the Unified Frontend Loop phase checklist before writing code.
+- Run python scripts/context-graph.py and enterprise-ui verify-loop before marking UI work complete.
 - Always inspect existing PageLayout, Card, Table, Form abstractions before creating new ones.
 - Use Drawer for quick create/edit and advanced filters; use Dialog only for confirmations and small forms.
 - Never put complex multi-section forms inside a Dialog.
@@ -146,10 +564,4 @@ SaaS, Fintech, Healthcare, E-commerce, Logistics, HR, CRM, ERP, Education, Gover
 - Use TanStack react-table for all data table logic; never use raw MUI Table without TanStack.
 - Use custom Pagination wrapper around MUI Pagination with shape='rounded' variant='tonal'; never use MUI TablePagination for logic.
 - Always structure Cards with CardHeader + CardContent + optional CardActions separated by Divider.
-- Before building charts or tables, detect backend presence and choose real API or MSW mock accordingly.
-- Use TanStack Query for all server state; never use raw useEffect + fetch without caching.
-- Map API responses to chart format via adapter functions; never bind charts directly to raw API responses.
-- Use MSW for mock data when backend is not ready; never hardcode mock data inside components.
-- Every user-facing string must use `t()`; never hardcode text in multi-language apps.
-- Before adding a new import, check package.json; if package is missing, ask user for confirmation before installing.
 - Reuse existing conventions; do not introduce unnecessary abstractions.

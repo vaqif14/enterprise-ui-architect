@@ -2,6 +2,20 @@
 
 All notable changes to the Enterprise UI Architect skill.
 
+## 2.2.0 — 2026-06-09
+
+### Added
+- **Stack Router** — mixed MUI/shadcn routing table in SKILL.md + `stack-profiles.csv` searchable domain
+- **Loop gate** — mandatory phase checklist before multi-screen UI codegen
+- **`scripts/context-graph.py`** — auto-generates `design-system/CONTEXT_GRAPH.md` reuse map
+- **`enterprise-ui verify-loop`** — CLI check for MASTER.md, STACK.md, CONTEXT_GRAPH.md (+ optional `--tsc`)
+- **`references/audit-live-evidence.md`** — live audit scores from corp-auction (MUI) and itinnovations (shadcn)
+- Cursor rule template injects Stack Router + Unified Frontend Loop sections
+
+### Changed
+- `cursor.json` inject section titles fixed to match SKILL.md headings
+- Quick reference and skill-content include stack router + verify-loop commands
+
 ## 2.1.0 — 2026-06-09
 
 ### Added

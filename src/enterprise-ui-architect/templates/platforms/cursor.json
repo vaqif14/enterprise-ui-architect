@@ -4,13 +4,14 @@
   "format": "cursor-rule",
   "description": "Cursor IDE rule file for Enterprise UI Architect skill",
   "frontmatter": {
-    "description": "Enterprise UI Architect — build premium admin UIs with MUI v7 and Ant Design engineering discipline",
+    "description": "Enterprise UI Architect — MUI v7 admin UIs, Unified Frontend Loop, stack routing for mixed MUI/shadcn repos",
     "globs": "**/*.{tsx,jsx,vue,ts,js}",
     "alwaysApply": false
   },
   "contentSource": "templates/base/skill-content.md",
   "injectSections": [
-    "Core Philosophy",
+    "Stack Router (Mixed MUI + shadcn)",
+    "Unified Frontend Loop (Kombai-Inspired, Cursor-Native)",
     "When to Apply",
     "Drawer vs Dialog vs Page Rules",
     "Table Standard",
@@ -19,6 +20,9 @@
     "Review Output Format"
   ],
   "rules": [
+    "Run Stack Router before implementation: MUI full skill vs shadcn process-only vs hybrid per STACK.md.",
+    "For multi-screen UI tasks, output the Unified Frontend Loop phase checklist before writing code.",
+    "Run python scripts/context-graph.py and enterprise-ui verify-loop before marking UI work complete.",
     "Always inspect existing PageLayout, Card, Table, Form abstractions before creating new ones.",
     "Use Drawer for quick create/edit and advanced filters; use Dialog only for confirmations and small forms.",
     "Never put complex multi-section forms inside a Dialog.",

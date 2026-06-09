@@ -35,6 +35,7 @@ DOMAINS = {
     "api-integration": "api-integration-patterns.csv",
     "data-strategies": "data-source-strategies.csv",
     "frontend-loop": "frontend-loop.csv",
+    "stack-profiles": "stack-profiles.csv",
 }
 
 

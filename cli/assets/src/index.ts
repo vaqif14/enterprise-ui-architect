@@ -2,6 +2,7 @@
 import { initCommand } from "./commands/init.js";
 import { verifyImportsCommand } from "./commands/verify-imports.js";
 import { verifyI18nCommand } from "./commands/verify-i18n.js";
+import { verifyLoopCommand } from "./commands/verify-loop.js";
 
 function showHelp(): void {
   console.log(`
@@ -11,26 +12,26 @@ Usage:
   enterprise-ui init [options]
   enterprise-ui verify-imports [options]
   enterprise-ui verify-i18n [options]
+  enterprise-ui verify-loop [options]
 
 Commands:
   init                Install skill into AI coding assistants
   verify-imports      Scan source files and report missing npm packages
   verify-i18n         Scan source files and report missing translation keys
+  verify-loop         Verify Unified Frontend Loop artifacts (MASTER, STACK, CONTEXT_GRAPH)
 
 Options:
   --ai <assistant>    Target AI assistant: cursor, claude, windsurf, copilot, codex, all (default: all)
   --offline           Use local assets without network (default: false)
   --src <dir>         Source directory to scan (default: current directory)
+  --tsc               Run typecheck when using verify-loop
   --help              Show this help
   --version           Show version
 
 Examples:
   enterprise-ui init --ai cursor
-  enterprise-ui init --ai claude --offline
-  enterprise-ui verify-imports
-  enterprise-ui verify-imports --src ./src
-  enterprise-ui verify-i18n
-  enterprise-ui verify-i18n --src ./src
+  enterprise-ui verify-loop
+  enterprise-ui verify-loop --tsc
 `);
 }
 
@@ -39,15 +40,16 @@ function parseArgs(args: string[]): {
   ai: string;
   offline: boolean;
   srcDir: string;
+  checkTsc: boolean;
   help: boolean;
   version: boolean;
 } {
-  const result = { ai: "all", offline: false, srcDir: process.cwd(), help: false, version: false };
+  const result = { ai: "all", offline: false, srcDir: process.cwd(), checkTsc: false, help: false, version: false };
   let command: string | undefined;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    if (arg === "init" || arg === "verify-imports" || arg === "verify-i18n") {
+    if (arg === "init" || arg === "verify-imports" || arg === "verify-i18n" || arg === "verify-loop") {
       command = arg;
     } else if (arg === "--ai" && i + 1 < args.length) {
       result.ai = args[++i];
@@ -57,6 +59,8 @@ function parseArgs(args: string[]): {
       result.srcDir = args[++i];
     } else if (arg === "--help" || arg === "-h") {
       result.help = true;
+    } else if (arg === "--tsc") {
+      result.checkTsc = true;
     } else if (arg === "--version" || arg === "-v") {
       result.version = true;
     }
@@ -70,7 +74,7 @@ function main(): number {
   const parsed = parseArgs(args);
 
   if (parsed.version) {
-    console.log("2.0.0");
+    console.log("2.2.0");
     return 0;
   }
 
@@ -103,6 +107,15 @@ function main(): number {
     try {
       verifyI18nCommand({ srcDir: parsed.srcDir });
       return 0;
+    } catch (err) {
+      console.error(`Error: ${(err as Error).message}`);
+      return 1;
+    }
+  }
+
+  if (parsed.command === "verify-loop") {
+    try {
+      return verifyLoopCommand({ cwd: parsed.srcDir, checkTsc: parsed.checkTsc });
     } catch (err) {
       console.error(`Error: ${(err as Error).message}`);
       return 1;

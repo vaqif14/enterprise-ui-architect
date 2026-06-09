@@ -1,0 +1,7 @@
+id,signal,detected_stack,primary_skill,implementation_skill,loop_phases,block_sections,notes
+1,@mui/material in package.json,mui_admin,enterprise-ui-architect,enterprise-ui-architect,1-7,none,Full skill — MUI v7 + RHF + TanStack standards
+2,components.json + no @mui/material,shadcn_next,enterprise-ui-architect process only,shadcn,1-2-4-6-7,Table Standard|Form Standard|Theme and Styling Standard|MUI theme augmentation,Use shadcn skill for Phase 5 codegen
+3,components.json + @mui/material,hybrid_mui_shadcn,enterprise-ui-architect,per-surface routing,1-7 selective,Confirm with user which surface uses which library,Split admin MUI vs marketing shadcn
+4,Tailwind ui/ folder + no MUI no components.json,tailwind_custom,enterprise-ui-architect process only,impeccable,1-2-4-6-7,All MUI component standards,ui/Card naming trap — verify not MUI
+5,Ant Design in package.json,antd_admin,enterprise-ui-architect process only,antd patterns,1-2-4-6-7,MUI-specific codegen,Borrow architecture discipline only
+6,No frontend detected,unknown,Ask user,Ask user,1-2-4 only,Phase 5 until stack confirmed,Do not assume MUI
